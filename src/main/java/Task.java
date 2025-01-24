@@ -10,8 +10,9 @@ public class Task {
 
     // Method to get the status icon
     public String getStatusIcon() {
-        return (isDone ? "\u2713" : "\u2718"); // Return ✓ for done, ✗ for not done
+        return (isDone ? "✓" : "✗"); // Use consistent symbols
     }
+    
 
     // Method to mark the task as done
     public void markAsDone() {
