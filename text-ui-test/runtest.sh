@@ -1,38 +1,25 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-# create bin directory if it doesn't exist
-if [ ! -d "../bin" ]
-then
-    mkdir ../bin
-fi
+# Create bin directory if it doesn't exist
+mkdir -p ../bin
 
-# delete output from previous run
-if [ -e "./ACTUAL.TXT" ]
-then
-    rm ACTUAL.TXT
-fi
+# Delete output from the previous run
+rm -f ACTUAL.TXT
 
-# compile the code into the bin folder, terminates if error occurred
-if ! javac -cp ../src/main/java -Xlint:none -d ../bin ../src/main/java/*.java
-then
+# Compile the code into the bin folder
+javac -cp ../src/main/java -Xlint:none -d ../bin ../src/main/java/*.java
+if [ $? -ne 0 ]; then
     echo "********** BUILD FAILURE **********"
     exit 1
 fi
 
-# run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT
-java -classpath ../bin Duke < input.txt > ACTUAL.TXT
+# Run the program, feed commands from input.txt, and redirect output to ACTUAL.TXT
+java -classpath ../bin Boblet < input.txt > ACTUAL.TXT
 
-# convert to UNIX format
-cp EXPECTED.TXT EXPECTED-UNIX.TXT
-dos2unix ACTUAL.TXT EXPECTED-UNIX.TXT
-
-# compare the output to the expected output
-diff ACTUAL.TXT EXPECTED-UNIX.TXT
-if [ $? -eq 0 ]
-then
-    echo "Test result: PASSED"
-    exit 0
+# Compare actual output to the expected output
+diff ACTUAL.TXT EXPECTED.TXT
+if [ $? -eq 0 ]; then
+    echo "Test passed!"
 else
-    echo "Test result: FAILED"
-    exit 1
+    echo "Test failed. See differences above."
 fi

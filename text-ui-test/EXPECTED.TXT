@@ -1,7 +1,40 @@
-Hello from
- ____        _        
-|  _ \ _   _| | _____ 
-| | | | | | | |/ / _ \
-| |_| | |_| |   <  __/
-|____/ \__,_|_|\_\___|
-
+____________________________________________________________
+Hey there! I'm Boblet, your friendly assistant!
+I can track ToDos, Deadlines, and Events. Just tell me what to do!
+Type 'list' to see your tasks, 'done <number>' to mark a task as done, or 'bye' to leave. Let's get started!
+____________________________________________________________
+You: ____________________________________________________________
+Got it. I've added this task:
+  [T][✗] read book
+Now you have 1 tasks in the list.
+____________________________________________________________
+You: ____________________________________________________________
+Got it. I've added this task:
+  [D][✗] return book (by: Sunday)
+Now you have 2 tasks in the list.
+____________________________________________________________
+You: ____________________________________________________________
+Got it. I've added this task:
+  [E][✗] project meeting (at: Mon 2-4pm)
+Now you have 3 tasks in the list.
+____________________________________________________________
+You: ____________________________________________________________
+Here are the tasks in your list:
+1.[T][✗] read book
+2.[D][✗] return book (by: Sunday)
+3.[E][✗] project meeting (at: Mon 2-4pm)
+____________________________________________________________
+You: ____________________________________________________________
+Nice! I've marked this task as done:
+  [D][✓] return book (by: Sunday)
+____________________________________________________________
+You: ____________________________________________________________
+Here are the tasks in your list:
+1.[T][✗] read book
+2.[D][✓] return book (by: Sunday)
+3.[E][✗] project meeting (at: Mon 2-4pm)
+____________________________________________________________
+You: ____________________________________________________________
+Aww, you're leaving already? Well, take care!
+See you soon! Bye from Boblet!
+____________________________________________________________
