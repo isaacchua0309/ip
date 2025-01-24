@@ -17,7 +17,6 @@ public class Boblet {
             String userInput = scanner.nextLine();
 
             try {
-                // Exit the program
                 if (userInput.equalsIgnoreCase("bye")) {
                     System.out.println("____________________________________________________________");
                     System.out.println("Aww, you're leaving already? Well, take care!");
