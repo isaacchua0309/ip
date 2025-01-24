@@ -1,26 +1,28 @@
-public class Task {
+public abstract class Task {
     protected String description;
     protected boolean isDone;
+    protected TaskType type;
 
-    // Constructor
-    public Task(String description) {
+    public Task(String description, TaskType type) {
         this.description = description;
         this.isDone = false;
+        this.type = type;
     }
 
-    // Method to get the status icon
     public String getStatusIcon() {
-        return (isDone ? "✓" : "✗"); // Use consistent symbols
+        return (isDone ? "✓" : "✗");
     }
-    
 
-    // Method to mark the task as done
     public void markAsDone() {
         this.isDone = true;
     }
 
+    public TaskType getType() {
+        return type;
+    }
+
     @Override
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        return "[" + getType().name() + "][" + getStatusIcon() + "] " + description;
     }
 }

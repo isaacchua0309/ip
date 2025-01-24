@@ -10,36 +10,49 @@ public class Boblet {
         System.out.println("Type 'list' to see your tasks, 'done <number>' to mark a task as done, 'delete <number>' to remove a task, or 'bye' to leave. Let's get started!");
         System.out.println("____________________________________________________________");
 
-        ArrayList<Task> tasks = new ArrayList<>(); // Dynamic list for tasks
+        ArrayList<Task> tasks = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.print("You: ");
             String userInput = scanner.nextLine();
+            CommandType command = parseCommand(userInput);
 
             try {
-                if (userInput.equalsIgnoreCase("bye")) {
-                    System.out.println("____________________________________________________________");
-                    System.out.println("Aww, you're leaving already! Well, take care!");
-                    System.out.println("See you soon! Bye from Boblet!");
-                    System.out.println("____________________________________________________________");
-                    break;
-                }
+                switch (command) {
+                    case BYE:
+                        System.out.println("____________________________________________________________");
+                        System.out.println("Aww, you're leaving already! Well, take care!");
+                        System.out.println("See you soon! Bye from Boblet!");
+                        System.out.println("____________________________________________________________");
+                        return;
 
-                if (userInput.equalsIgnoreCase("list")) {
-                    handleListCommand(tasks);
-                } else if (userInput.startsWith("done")) {
-                    handleDoneCommand(userInput, tasks);
-                } else if (userInput.startsWith("delete")) {
-                    handleDeleteCommand(userInput, tasks);
-                } else if (userInput.startsWith("todo")) {
-                    handleTodoCommand(userInput, tasks);
-                } else if (userInput.startsWith("deadline")) {
-                    handleDeadlineCommand(userInput, tasks);
-                } else if (userInput.startsWith("event")) {
-                    handleEventCommand(userInput, tasks);
-                } else {
-                    throw new BobletException("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
+                    case LIST:
+                        handleListCommand(tasks);
+                        break;
+
+                    case DONE:
+                        handleDoneCommand(userInput, tasks);
+                        break;
+
+                    case DELETE:
+                        handleDeleteCommand(userInput, tasks);
+                        break;
+
+                    case TODO:
+                        handleTodoCommand(userInput, tasks);
+                        break;
+
+                    case DEADLINE:
+                        handleDeadlineCommand(userInput, tasks);
+                        break;
+
+                    case EVENT:
+                        handleEventCommand(userInput, tasks);
+                        break;
+
+                    default:
+                        throw new BobletException("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
                 }
             } catch (BobletException e) {
                 System.out.println("____________________________________________________________");
@@ -47,8 +60,26 @@ public class Boblet {
                 System.out.println("____________________________________________________________");
             }
         }
+    }
 
-        scanner.close();
+    private static CommandType parseCommand(String input) {
+        if (input.equalsIgnoreCase("list")) {
+            return CommandType.LIST;
+        } else if (input.startsWith("done")) {
+            return CommandType.DONE;
+        } else if (input.startsWith("delete")) {
+            return CommandType.DELETE;
+        } else if (input.startsWith("todo")) {
+            return CommandType.TODO;
+        } else if (input.startsWith("deadline")) {
+            return CommandType.DEADLINE;
+        } else if (input.startsWith("event")) {
+            return CommandType.EVENT;
+        } else if (input.equalsIgnoreCase("bye")) {
+            return CommandType.BYE;
+        } else {
+            return CommandType.UNKNOWN;
+        }
     }
 
     private static void handleListCommand(ArrayList<Task> tasks) {
@@ -86,7 +117,7 @@ public class Boblet {
             if (taskNumber < 0 || taskNumber >= tasks.size()) {
                 throw new BobletException("☹ OOPS!!! Invalid task number!");
             }
-            Task removedTask = tasks.remove(taskNumber); // Remove the task
+            Task removedTask = tasks.remove(taskNumber);
             System.out.println("____________________________________________________________");
             System.out.println("Noted. I've removed this task:");
             System.out.println("  " + removedTask);
@@ -102,7 +133,7 @@ public class Boblet {
             throw new BobletException("☹ OOPS!!! The description of a todo cannot be empty.");
         }
         String description = userInput.substring(5).trim();
-        tasks.add(new Todo(description)); // Add to the list
+        tasks.add(new Todo(description));
         System.out.println("____________________________________________________________");
         System.out.println("Got it. I've added this task:");
         System.out.println("  " + tasks.get(tasks.size() - 1));
