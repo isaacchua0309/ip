@@ -5,10 +5,10 @@ public class Boblet {
         System.out.println("____________________________________________________________");
         System.out.println("Hey there! I'm Boblet, your friendly assistant!");
         System.out.println("I can keep track of your tasks. Just tell me what to do!");
-        System.out.println("Type 'list' to see your tasks or 'bye' to leave. Let's get started!");
+        System.out.println("Type 'list' to see your tasks, 'done <number>' to mark a task as done, or 'bye' to leave. Let's get started!");
         System.out.println("____________________________________________________________");
 
-        String[] tasks = new String[100];
+        Task[] tasks = new Task[100]; // Array to store tasks
         int taskCount = 0;
         Scanner scanner = new Scanner(System.in);
 
@@ -33,13 +33,33 @@ public class Boblet {
                 } else {
                     System.out.println("Here's what you've got so far:");
                     for (int i = 0; i < taskCount; i++) {
-                        System.out.println((i + 1) + ". " + tasks[i]);
+                        System.out.println((i + 1) + "." + tasks[i]);
                     }
                 }
                 System.out.println("____________________________________________________________");
+            } else if (userInput.startsWith("done")) {
+                // Mark a task as done
+                try {
+                    int taskNumber = Integer.parseInt(userInput.split(" ")[1]) - 1;
+                    if (taskNumber >= 0 && taskNumber < taskCount) {
+                        tasks[taskNumber].markAsDone();
+                        System.out.println("____________________________________________________________");
+                        System.out.println("Nice! I've marked this task as done:");
+                        System.out.println("  " + tasks[taskNumber]);
+                        System.out.println("____________________________________________________________");
+                    } else {
+                        System.out.println("____________________________________________________________");
+                        System.out.println("Invalid task number! Please try again.");
+                        System.out.println("____________________________________________________________");
+                    }
+                } catch (Exception e) {
+                    System.out.println("____________________________________________________________");
+                    System.out.println("Invalid input format! Use: done <task number>");
+                    System.out.println("____________________________________________________________");
+                }
             } else {
-                // Add the task to the array
-                tasks[taskCount] = userInput;
+                // Add a new task
+                tasks[taskCount] = new Task(userInput);
                 taskCount++;
 
                 System.out.println("____________________________________________________________");
