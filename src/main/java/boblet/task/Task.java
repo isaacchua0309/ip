@@ -1,3 +1,5 @@
+package boblet.task;
+
 public abstract class Task {
     protected String description;
     protected boolean isDone;
@@ -9,21 +11,24 @@ public abstract class Task {
         this.type = type;
     }
 
-    public String getStatusIcon() {
-        return (isDone ? "✓" : "✗");
+    public String getDescription() {
+        return description;
     }
 
-    public void markAsDone() {
-        this.isDone = true;
+    public boolean isDone() {
+        return isDone;
     }
 
     public TaskType getType() {
         return type;
     }
 
+    public void markAsDone() {
+        this.isDone = true;
+    }
+
     @Override
     public String toString() {
-        return "[" + getType().name() + "][" + getStatusIcon() + "] " + description;
+        return "[" + type + "][" + (isDone ? "✓" : "✗") + "] " + description;
     }
-    
 }

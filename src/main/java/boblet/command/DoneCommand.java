@@ -1,9 +1,16 @@
+package boblet.command;
 import java.io.IOException;
 
-public class DeleteCommand extends Command {
+import boblet.exception.BobletException;
+import boblet.task.Task;
+import boblet.util.Storage;
+import boblet.util.TaskList;
+import boblet.util.Ui;
+
+public class DoneCommand extends Command {
     private final int index;
 
-    public DeleteCommand(String index) throws BobletException {
+    public DoneCommand(String index) throws BobletException {
         try {
             this.index = Integer.parseInt(index.trim()) - 1;
         } catch (NumberFormatException e) {
@@ -17,10 +24,10 @@ public class DeleteCommand extends Command {
             throw new BobletException("Task number out of range.");
         }
 
-        Task task = tasks.deleteTask(index);
-        ui.showMessage("Noted. I've removed this task:");
+        Task task = tasks.getTask(index);
+        task.markAsDone();
+        ui.showMessage("Nice! I've marked this task as done:");
         ui.showMessage("  " + task);
-        ui.showMessage("Now you have " + tasks.size() + " tasks in the list.");
 
         try {
             storage.saveTasks(tasks.getAllTasks());

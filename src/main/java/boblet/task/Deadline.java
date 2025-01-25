@@ -1,9 +1,11 @@
+package boblet.task;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Deadline extends Task {
     private LocalDateTime by;
@@ -14,28 +16,33 @@ public class Deadline extends Task {
     }
 
     private LocalDateTime parseDateTime(String dateTime) {
+        String normalizedDateTime = dateTime.trim();
+    
         List<DateTimeFormatter> formats = new ArrayList<>();
-        formats.add(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")); // e.g., 2023-11-05 18:00
-        formats.add(DateTimeFormatter.ofPattern("yyyy-MM-dd")); // e.g., 2023-11-05
-        formats.add(DateTimeFormatter.ofPattern("MMM d yyyy h:mma")); // e.g., Nov 5 2023 6:00PM
-        formats.add(DateTimeFormatter.ofPattern("MMM d yyyy")); // e.g., Nov 5 2023
-        formats.add(DateTimeFormatter.ofPattern("d/M/yyyy HHmm")); // e.g., 5/11/2023 1800
-        formats.add(DateTimeFormatter.ofPattern("d/M/yyyy")); // e.g., 5/11/2023
-
+        formats.add(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.ENGLISH));
+        formats.add(DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH));
+        formats.add(DateTimeFormatter.ofPattern("MMM d yyyy h:mma", Locale.ENGLISH));
+        formats.add(DateTimeFormatter.ofPattern("MMM d yyyy", Locale.ENGLISH));
+        formats.add(DateTimeFormatter.ofPattern("d/M/yyyy HHmm", Locale.ENGLISH));
+        formats.add(DateTimeFormatter.ofPattern("d/M/yyyy", Locale.ENGLISH));
+        formats.add(DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm a", Locale.ENGLISH));
+    
         for (DateTimeFormatter formatter : formats) {
             try {
-                return LocalDateTime.parse(dateTime, formatter);
+                return LocalDateTime.parse(normalizedDateTime, formatter);
             } catch (DateTimeParseException ignored) {
                 // Try the next format
             }
         }
-
+    
         throw new IllegalArgumentException("Invalid date/time format: " + dateTime);
     }
+    
+    
 
     public String getBy() {
-        return by.format(DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm a"));
-    }
+        return by.format(DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm a").withLocale(java.util.Locale.ENGLISH));
+    }    
 
     @Override
     public String toString() {

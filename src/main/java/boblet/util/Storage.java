@@ -1,5 +1,12 @@
+package boblet.util;
 import java.io.*;
 import java.util.ArrayList;
+
+import boblet.exception.BobletException;
+import boblet.task.Deadline;
+import boblet.task.Event;
+import boblet.task.Task;
+import boblet.task.Todo;
 
 public class Storage {
     private final String filePath;
@@ -93,7 +100,7 @@ public class Storage {
      * @return String representation of the task.
      */
     private String serializeTask(Task task) {
-        String base = String.format("%s | %d | %s", task.getType().name().charAt(0), task.isDone ? 1 : 0, task.description);
+        String base = String.format("%s | %d | %s", task.getType().name().charAt(0), task.isDone() ? 1 : 0, task.getDescription());
         if (task instanceof Deadline) {
             return base + " | " + ((Deadline) task).getBy();
         } else if (task instanceof Event) {

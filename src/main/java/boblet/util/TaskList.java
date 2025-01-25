@@ -1,4 +1,7 @@
+package boblet.util;
 import java.util.ArrayList;
+
+import boblet.task.Task;
 
 public class TaskList {
     private final ArrayList<Task> tasks;

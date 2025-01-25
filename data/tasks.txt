@@ -1,2 +1,2 @@
-T | 1 | Read a book
-E | 0 | Team meeting | Feb 01 2025, 02:00 pm
+D | 0 | Submit assignment | Feb 01 2025, 06:00 PM
+E | 0 | Team meeting | Feb 01 2025, 02:00 PM

@@ -1,4 +1,11 @@
+package boblet.command;
 import java.io.IOException;
+
+import boblet.exception.BobletException;
+import boblet.task.Task;
+import boblet.util.Storage;
+import boblet.util.TaskList;
+import boblet.util.Ui;
 
 public class AddCommand extends Command {
     private final Task task;

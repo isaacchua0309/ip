@@ -1,4 +1,12 @@
+package boblet;
 import java.io.IOException;
+
+import boblet.command.Command;
+import boblet.exception.BobletException;
+import boblet.util.Parser;
+import boblet.util.Storage;
+import boblet.util.TaskList;
+import boblet.util.Ui;
 
 public class Boblet {
     private Storage storage;
