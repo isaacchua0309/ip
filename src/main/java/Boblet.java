@@ -1,7 +1,9 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Boblet {
+    private static final String FILE_PATH = "./data/boblet.txt";
 
     public static void main(String[] args) {
         System.out.println("____________________________________________________________");
@@ -10,7 +12,16 @@ public class Boblet {
         System.out.println("Type 'list' to see your tasks, 'done <number>' to mark a task as done, 'delete <number>' to remove a task, or 'bye' to leave. Let's get started!");
         System.out.println("____________________________________________________________");
 
-        ArrayList<Task> tasks = new ArrayList<>();
+        Storage storage = new Storage(FILE_PATH);
+        ArrayList<Task> tasks;
+
+        try {
+            tasks = storage.loadTasks();
+        } catch (BobletException | IOException e) {
+            System.out.println("Failed to load tasks. Starting with an empty list.");
+            tasks = new ArrayList<>();
+        }
+
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -25,6 +36,7 @@ public class Boblet {
                         System.out.println("Aww, you're leaving already! Well, take care!");
                         System.out.println("See you soon! Bye from Boblet!");
                         System.out.println("____________________________________________________________");
+                        storage.saveTasks(tasks);
                         return;
 
                     case LIST:
@@ -33,28 +45,33 @@ public class Boblet {
 
                     case DONE:
                         handleDoneCommand(userInput, tasks);
+                        storage.saveTasks(tasks);
                         break;
 
                     case DELETE:
                         handleDeleteCommand(userInput, tasks);
+                        storage.saveTasks(tasks);
                         break;
 
                     case TODO:
                         handleTodoCommand(userInput, tasks);
+                        storage.saveTasks(tasks);
                         break;
 
                     case DEADLINE:
                         handleDeadlineCommand(userInput, tasks);
+                        storage.saveTasks(tasks);
                         break;
 
                     case EVENT:
                         handleEventCommand(userInput, tasks);
+                        storage.saveTasks(tasks);
                         break;
 
                     default:
                         throw new BobletException("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
                 }
-            } catch (BobletException e) {
+            } catch (BobletException | IOException e) {
                 System.out.println("____________________________________________________________");
                 System.out.println(e.getMessage());
                 System.out.println("____________________________________________________________");
