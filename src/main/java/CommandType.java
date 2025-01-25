@@ -6,5 +6,7 @@ public enum CommandType {
     DEADLINE,
     EVENT,
     BYE,
-    UNKNOWN
+    UNKNOWN,
+    SHOW_DATE
+
 }

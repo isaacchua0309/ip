@@ -1,2 +1,2 @@
-T | 0 | eat lunch with zanea
-D | 1 | deadline return book | Sunday
+T | 0 | read book
+D | 0 | return book | Dec 02 2019, 06:00 pm

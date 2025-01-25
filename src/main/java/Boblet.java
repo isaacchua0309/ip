@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -92,12 +94,15 @@ public class Boblet {
             return CommandType.DEADLINE;
         } else if (input.startsWith("event")) {
             return CommandType.EVENT;
+        } else if (input.startsWith("show date")) {
+            return CommandType.SHOW_DATE;
         } else if (input.equalsIgnoreCase("bye")) {
             return CommandType.BYE;
         } else {
             return CommandType.UNKNOWN;
         }
     }
+    
 
     private static void handleListCommand(ArrayList<Task> tasks) {
         System.out.println("____________________________________________________________");
@@ -170,10 +175,11 @@ public class Boblet {
             System.out.println("  " + tasks.get(tasks.size() - 1));
             System.out.println("Now you have " + tasks.size() + " tasks in the list.");
             System.out.println("____________________________________________________________");
-        } catch (IndexOutOfBoundsException e) {
-            throw new BobletException("☹ OOPS!!! The description or deadline of a deadline cannot be empty.");
+        } catch (Exception e) {
+            throw new BobletException("☹ OOPS!!! Invalid date/time format. Try yyyy-MM-dd HH:mm, d/M/yyyy HHmm, or MMM d yyyy h:mma.");
         }
     }
+    
 
     private static void handleEventCommand(String userInput, ArrayList<Task> tasks) throws BobletException {
         try {
@@ -187,8 +193,35 @@ public class Boblet {
             System.out.println("  " + tasks.get(tasks.size() - 1));
             System.out.println("Now you have " + tasks.size() + " tasks in the list.");
             System.out.println("____________________________________________________________");
-        } catch (IndexOutOfBoundsException e) {
-            throw new BobletException("☹ OOPS!!! The description or time of an event cannot be empty.");
+        } catch (Exception e) {
+            throw new BobletException("☹ OOPS!!! Invalid date/time format. Try yyyy-MM-dd HH:mm, d/M/yyyy HHmm, or MMM d yyyy h:mma.");
         }
     }
+
+    private static void handleShowDateCommand(String userInput, ArrayList<Task> tasks) throws BobletException {
+    try {
+        String date = userInput.substring(10).trim();
+        LocalDate filterDate = LocalDate.parse(date);
+        System.out.println("____________________________________________________________");
+        System.out.println("Tasks scheduled for " + filterDate.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + ":");
+        boolean found = false;
+        for (Task task : tasks) {
+            if (task instanceof Deadline && ((Deadline) task).getBy().equals(filterDate)) {
+                System.out.println(task);
+                found = true;
+            } else if (task instanceof Event && ((Event) task).getAt().equals(filterDate)) {
+                System.out.println(task);
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("No tasks found for this date.");
+        }
+        System.out.println("____________________________________________________________");
+    } catch (Exception e) {
+        throw new BobletException("☹ OOPS!!! Invalid date format. Please use yyyy-mm-dd.");
+    }
+}
+
+    
 }
