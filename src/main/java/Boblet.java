@@ -40,39 +40,44 @@ public class Boblet {
                         System.out.println("____________________________________________________________");
                         storage.saveTasks(tasks);
                         return;
-
+                
                     case LIST:
                         handleListCommand(tasks);
                         break;
-
+                
                     case DONE:
                         handleDoneCommand(userInput, tasks);
                         storage.saveTasks(tasks);
                         break;
-
+                
                     case DELETE:
                         handleDeleteCommand(userInput, tasks);
                         storage.saveTasks(tasks);
                         break;
-
+                
                     case TODO:
                         handleTodoCommand(userInput, tasks);
                         storage.saveTasks(tasks);
                         break;
-
+                
                     case DEADLINE:
                         handleDeadlineCommand(userInput, tasks);
                         storage.saveTasks(tasks);
                         break;
-
+                
                     case EVENT:
                         handleEventCommand(userInput, tasks);
                         storage.saveTasks(tasks);
                         break;
-
+                
+                    case SHOW_DATE: // Handle the show date command
+                        handleShowDateCommand(userInput, tasks);
+                        break;
+                
                     default:
                         throw new BobletException("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
                 }
+                
             } catch (BobletException | IOException e) {
                 System.out.println("____________________________________________________________");
                 System.out.println(e.getMessage());
