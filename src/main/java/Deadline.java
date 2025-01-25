@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -40,4 +41,9 @@ public class Deadline extends Task {
     public String toString() {
         return super.toString() + " (by: " + getBy() + ")";
     }
+
+    public boolean isOnDate(LocalDate date) {
+    return this.by.toLocalDate().equals(date);
+}
+
 }

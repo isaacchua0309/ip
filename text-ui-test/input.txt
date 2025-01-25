@@ -1,6 +1,9 @@
-todo read book
-deadline return book /by 2/12/2019 1800
+todo Read a book
+deadline Submit assignment /by 2025-02-01 18:00
+event Team meeting /at 2025-02-01 14:00
 list
-done 2
+done 1
+list
+delete 2
 list
 bye

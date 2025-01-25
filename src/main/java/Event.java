@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -40,4 +41,9 @@ public class Event extends Task {
     public String toString() {
         return super.toString() + " (at: " + getAt() + ")";
     }
+
+    public boolean isOnDate(LocalDate date) {
+    return this.at.toLocalDate().equals(date);
+}
+
 }

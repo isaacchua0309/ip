@@ -1,0 +1,35 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
+public class ShowDateCommand extends Command {
+    private final LocalDate date;
+
+    public ShowDateCommand(String dateInput) throws BobletException {
+        try {
+            this.date = LocalDate.parse(dateInput.trim());
+        } catch (DateTimeParseException e) {
+            throw new BobletException("Invalid date format. Please use yyyy-MM-dd.");
+        }
+    }
+
+    @Override
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
+        ui.showMessage("Tasks scheduled for " + date.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + ":");
+        boolean found = false;
+
+        for (Task task : tasks.getAllTasks()) {
+            if (task instanceof Deadline && ((Deadline) task).isOnDate(date)) {
+                ui.showMessage(task.toString());
+                found = true;
+            } else if (task instanceof Event && ((Event) task).isOnDate(date)) {
+                ui.showMessage(task.toString());
+                found = true;
+            }
+        }
+
+        if (!found) {
+            ui.showMessage("No tasks found for this date.");
+        }
+    }
+}
