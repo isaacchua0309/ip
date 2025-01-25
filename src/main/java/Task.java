@@ -25,4 +25,5 @@ public abstract class Task {
     public String toString() {
         return "[" + getType().name() + "][" + getStatusIcon() + "] " + description;
     }
+    
 }

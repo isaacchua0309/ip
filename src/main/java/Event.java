@@ -10,4 +10,9 @@ public class Event extends Task {
     public String toString() {
         return super.toString() + " (at: " + at + ")";
     }
+
+    public String getAt() {
+        return at;
+    }
+    
 }
