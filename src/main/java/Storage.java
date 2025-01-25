@@ -45,11 +45,11 @@ public class Storage {
         if (parts.length < 3) {
             throw new BobletException("Invalid task format.");
         }
-
+    
         String type = parts[0];
         boolean isDone = parts[1].equals("1");
         String description = parts[2];
-
+    
         switch (type) {
             case "T":
                 Todo todo = new Todo(description);
@@ -73,6 +73,7 @@ public class Storage {
                 throw new BobletException("Unknown task type.");
         }
     }
+    
 
     private String serializeTask(Task task) {
         String base = String.format("%s | %d | %s", task.getType().name().charAt(0), task.isDone ? 1 : 0, task.description);
@@ -83,4 +84,5 @@ public class Storage {
         }
         return base;
     }
+    
 }
