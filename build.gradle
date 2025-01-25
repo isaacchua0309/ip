@@ -1,0 +1,52 @@
+plugins {
+    // Apply the application plugin to support building and running a CLI application.
+    id 'application'
+}
+
+repositories {
+    // Use Maven Central to resolve dependencies.
+    mavenCentral()
+}
+
+dependencies {
+    // Include any dependencies required for the project.
+    implementation 'com.google.guava:guava:32.1.2-jre' // Example dependency for Guava.
+
+    // Include JUnit for testing.
+    testImplementation 'junit:junit:4.13.2'
+}
+
+java {
+    toolchain {
+        // Specify the Java version for the project.
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+application {
+    // Specify the main class of your application.
+    mainClass = 'boblet.Boblet'
+}
+
+// Configure the `run` task for input handling.
+tasks.named('run') {
+    doFirst {
+        // Uncomment for interactive input.
+        standardInput = System.in
+
+        // Uncomment for file-based non-interactive input.
+        // standardInput = file('commands.txt').newInputStream()
+    }
+}
+
+// Configure the `jar` task to create a runnable JAR file.
+tasks.jar {
+    manifest {
+        attributes(
+            'Main-Class': application.mainClass
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
