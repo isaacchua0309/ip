@@ -13,7 +13,7 @@ dependencies {
     implementation 'com.google.guava:guava:32.1.2-jre' // Example dependency for Guava.
 
     // Include JUnit for testing.
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 }
 
 java {
@@ -50,3 +50,8 @@ tasks.jar {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+

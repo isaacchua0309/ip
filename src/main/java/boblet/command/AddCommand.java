@@ -27,4 +27,8 @@ public class AddCommand extends Command {
             throw new BobletException("Failed to save tasks to storage: " + e.getMessage());
         }
     }
+
+    public Task getTask() {
+        return this.task; // Expose the task for testing and other operations
+    }
 }

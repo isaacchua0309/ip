@@ -17,30 +17,39 @@ public class Event extends Task {
     }
 
     private LocalDateTime parseDateTime(String dateTime) {
-        String normalizedDateTime = dateTime.trim(); // Trim any leading/trailing spaces
+        String normalizedDateTime = dateTime.trim();
 
         List<DateTimeFormatter> formats = new ArrayList<>();
         formats.add(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.ENGLISH));
-        formats.add(DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH));
         formats.add(DateTimeFormatter.ofPattern("MMM d yyyy h:mma", Locale.ENGLISH));
-        formats.add(DateTimeFormatter.ofPattern("MMM d yyyy", Locale.ENGLISH));
         formats.add(DateTimeFormatter.ofPattern("d/M/yyyy HHmm", Locale.ENGLISH));
+        formats.add(DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm a", Locale.ENGLISH));
+        formats.add(DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH));
+        formats.add(DateTimeFormatter.ofPattern("MMM d yyyy", Locale.ENGLISH));
         formats.add(DateTimeFormatter.ofPattern("d/M/yyyy", Locale.ENGLISH));
-        formats.add(DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm a", Locale.ENGLISH)); // e.g., Feb 01 2025, 02:00 PM
 
         for (DateTimeFormatter formatter : formats) {
             try {
+                // Try parse as LocalDateTime
                 return LocalDateTime.parse(normalizedDateTime, formatter);
-            } catch (DateTimeParseException ignored) {
-                // Try the next format
+            } catch (DateTimeParseException e1) {
+                // Fallback: parse as LocalDate and atStartOfDay()
+                try {
+                    LocalDate date = LocalDate.parse(normalizedDateTime, formatter);
+                    return date.atStartOfDay();
+                } catch (DateTimeParseException e2) {
+                    // Continue to next format
+                }
             }
         }
 
+        // If all formats fail
         throw new IllegalArgumentException("Invalid date/time format: " + dateTime);
     }
 
     public String getAt() {
-        return at.format(DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm a").withLocale(Locale.ENGLISH));
+        // e.g., "Feb 01 2025, 12:00 AM"
+        return at.format(DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm a", Locale.ENGLISH));
     }
 
     @Override

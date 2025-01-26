@@ -41,4 +41,8 @@ public class ShowDateCommand extends Command {
             ui.showMessage("No tasks found for this date.");
         }
     }
+
+    public LocalDate getDate(){
+        return this.date;
+    }
 }

@@ -14,8 +14,13 @@ import boblet.task.Todo;
 
 public class Parser {
     public static Command parse(String input) throws BobletException {
+        // Step 1: Split the input
         String[] words = input.split(" ", 2);
-        String action = words[0].toLowerCase();
+        
+        // Keep the original for error messages
+        String rawAction = words[0];
+        // Lowercase for matching known commands
+        String action = rawAction.toLowerCase();
 
         switch (action) {
             case "bye":
@@ -35,7 +40,8 @@ public class Parser {
             case "showdate":
                 return new ShowDateCommand(words[1]);
             default:
-                throw new BobletException("Unknown command: " + action);
+                // Step 2: Throw with the original command word, not lowercased
+                throw new BobletException("Unknown command: " + rawAction);
         }
     }
 

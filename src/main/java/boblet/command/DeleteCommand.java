@@ -35,4 +35,8 @@ public class DeleteCommand extends Command {
             throw new BobletException("Failed to save tasks to storage: " + e.getMessage());
         }
     }
+
+    public int getTaskIndex() {
+        return this.index; // Expose the task index for testing and other operations
+    }
 }
