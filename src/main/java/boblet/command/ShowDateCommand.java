@@ -1,4 +1,5 @@
 package boblet.command;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -11,9 +12,18 @@ import boblet.util.Storage;
 import boblet.util.TaskList;
 import boblet.util.Ui;
 
+/**
+ * Represents a command to display tasks scheduled for a specific date.
+ */
 public class ShowDateCommand extends Command {
     private final LocalDate date;
 
+    /**
+     * Constructs a ShowDateCommand with the specified date input.
+     *
+     * @param dateInput The date input in the format "yyyy-MM-dd".
+     * @throws BobletException If the date input is in an invalid format.
+     */
     public ShowDateCommand(String dateInput) throws BobletException {
         try {
             this.date = LocalDate.parse(dateInput.trim());
@@ -22,6 +32,14 @@ public class ShowDateCommand extends Command {
         }
     }
 
+    /**
+     * Executes the show date command, displaying all tasks scheduled for the specified date.
+     * If no tasks are found for the date, a message indicating this is displayed.
+     *
+     * @param tasks   The task list containing all tasks.
+     * @param ui      The UI to display messages to the user.
+     * @param storage The storage to persist changes (not used in this command).
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         ui.showMessage("Tasks scheduled for " + date.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + ":");
@@ -42,7 +60,12 @@ public class ShowDateCommand extends Command {
         }
     }
 
-    public LocalDate getDate(){
+    /**
+     * Returns the date associated with this command.
+     *
+     * @return The date as a LocalDate object.
+     */
+    public LocalDate getDate() {
         return this.date;
     }
 }

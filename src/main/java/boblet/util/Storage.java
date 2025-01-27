@@ -1,4 +1,5 @@
 package boblet.util;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -8,9 +9,18 @@ import boblet.task.Event;
 import boblet.task.Task;
 import boblet.task.Todo;
 
+/**
+ * The Storage class handles the loading and saving of tasks to and from a file.
+ * It ensures persistence of tasks between sessions of the Boblet application.
+ */
 public class Storage {
     private final String filePath;
 
+    /**
+     * Constructs a Storage object with the specified file path.
+     *
+     * @param filePath The file path for storing task data.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
