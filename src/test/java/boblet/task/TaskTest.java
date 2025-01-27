@@ -8,7 +8,6 @@ class TaskTest {
 
     @Test
     void testConstructor() {
-        // Test constructor initialization
         Task task = new Todo("Sample Task");
         assertEquals("Sample Task", task.getDescription(), "Description should match.");
         assertFalse(task.isDone(), "Task should not be marked as done initially.");
@@ -17,7 +16,6 @@ class TaskTest {
 
     @Test
     void testMarkAsDone() {
-        // Test marking a task as done
         Task task = new Todo("Sample Task");
         assertFalse(task.isDone(), "Task should not be marked as done initially.");
         
