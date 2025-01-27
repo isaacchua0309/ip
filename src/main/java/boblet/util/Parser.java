@@ -5,6 +5,7 @@ import boblet.command.Command;
 import boblet.command.DeleteCommand;
 import boblet.command.DoneCommand;
 import boblet.command.ExitCommand;
+import boblet.command.FindCommand;
 import boblet.command.ListCommand;
 import boblet.command.ShowDateCommand;
 import boblet.exception.BobletException;
@@ -39,6 +40,12 @@ public class Parser {
                 return parseEventCommand(words);
             case "showdate":
                 return new ShowDateCommand(words[1]);
+            case "find":
+                if (words.length < 2 || words[1].trim().isEmpty()) {
+                    throw new BobletException("The keyword for the find command cannot be empty.");
+                }
+                return new FindCommand(words[1].trim());
+
             default:
                 // Step 2: Throw with the original command word, not lowercased
                 throw new BobletException("Unknown command: " + rawAction);

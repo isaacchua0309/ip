@@ -103,4 +103,11 @@ class ParserTest {
         });
         assertEquals("The event must specify a date/time using the '/at' keyword.", exception.getMessage(), "Missing '/at' in event should throw exception.");
     }
+
+    @Test
+    void testParseFindCommand() throws BobletException {
+        Command command = Parser.parse("find book");
+        assertTrue(command instanceof FindCommand, "Should return a FindCommand.");
+}
+
 }
