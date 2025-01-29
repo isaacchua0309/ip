@@ -14,7 +14,7 @@ public abstract class Task {
      * The task is initially marked as not done.
      *
      * @param description The description of the task.
-     * @param type        The type of the task (e.g., TODO, DEADLINE, EVENT).
+     * @param type        The type of the task.
      */
     public Task(String description, TaskType type) {
         this.description = description;
