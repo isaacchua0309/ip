@@ -1,6 +1,11 @@
 package boblet.util;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import boblet.exception.BobletException;
@@ -84,22 +89,31 @@ public class Storage {
         String description = parts[2];
 
         switch (type) {
-            case "T":
-                Todo todo = new Todo(description);
-                if (isDone) todo.markAsDone();
-                return todo;
-            case "D":
-                validateParts(parts, 4, "deadline");
-                Deadline deadline = new Deadline(description, parts[3]);
-                if (isDone) deadline.markAsDone();
-                return deadline;
-            case "E":
-                validateParts(parts, 4, "event");
-                Event event = new Event(description, parts[3]);
-                if (isDone) event.markAsDone();
-                return event;
-            default:
-                throw new BobletException("Unknown task type.");
+        case "T":
+            Todo todo = new Todo(description);
+            if (isDone) {
+                todo.markAsDone();
+            }
+            return todo;
+
+        case "D":
+            validateParts(parts, 4, "deadline");
+            Deadline deadline = new Deadline(description, parts[3]);
+            if (isDone) {
+                deadline.markAsDone();
+            }
+            return deadline;
+
+        case "E":
+            validateParts(parts, 4, "event");
+            Event event = new Event(description, parts[3]);
+            if (isDone) {
+                event.markAsDone();
+            }
+            return event;
+
+        default:
+            throw new BobletException("Unknown task type.");
         }
     }
 
@@ -110,7 +124,11 @@ public class Storage {
      * @return String representation of the task.
      */
     private String serializeTask(Task task) {
-        String base = String.format("%s | %d | %s", task.getType().name().charAt(0), task.isDone() ? 1 : 0, task.getDescription());
+        String base = String.format("%s | %d | %s",
+                task.getType().name().charAt(0),
+                task.isDone() ? 1 : 0,
+                task.getDescription());
+
         if (task instanceof Deadline) {
             return base + " | " + ((Deadline) task).getBy();
         } else if (task instanceof Event) {

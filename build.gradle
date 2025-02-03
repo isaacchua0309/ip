@@ -1,6 +1,7 @@
 plugins {
     // Apply the application plugin to support building and running a CLI application.
     id 'application'
+    id 'checkstyle'
 }
 
 repositories {
@@ -60,5 +61,12 @@ java {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
+
+checkstyle {
+    toolVersion = '10.2'  // Ensure this matches the CheckStyle version
+    configFile = file("${rootProject.projectDir}/config/checkstyle/checkstyle.xml")
+    configProperties.suppressionFile = file("${rootProject.projectDir}/config/checkstyle/suppressions.xml")
+}
+
 
 

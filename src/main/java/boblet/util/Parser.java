@@ -36,31 +36,30 @@ public class Parser {
         String action = rawAction.toLowerCase();
 
         switch (action) {
-            case "bye":
-                return new ExitCommand();
-            case "list":
-                return new ListCommand();
-            case "done":
-                return new DoneCommand(words[1]);
-            case "delete":
-                return new DeleteCommand(words[1]);
-            case "todo":
-                return parseTodoCommand(words);
-            case "deadline":
-                return parseDeadlineCommand(words);
-            case "event":
-                return parseEventCommand(words);
-            case "showdate":
-                return new ShowDateCommand(words[1]);
-            case "find":
-                if (words.length < 2 || words[1].trim().isEmpty()) {
-                    throw new BobletException("The keyword for the find command cannot be empty.");
-                }
-                return new FindCommand(words[1].trim());
-
-            default:
-                // Step 2: Throw with the original command word, not lowercased
-                throw new BobletException("Unknown command: " + rawAction);
+        case "bye":
+            return new ExitCommand();
+        case "list":
+            return new ListCommand();
+        case "done":
+            return new DoneCommand(words[1]);
+        case "delete":
+            return new DeleteCommand(words[1]);
+        case "todo":
+            return parseTodoCommand(words);
+        case "deadline":
+            return parseDeadlineCommand(words);
+        case "event":
+            return parseEventCommand(words);
+        case "showdate":
+            return new ShowDateCommand(words[1]);
+        case "find":
+            if (words.length < 2 || words[1].trim().isEmpty()) {
+                throw new BobletException("The keyword for the find command cannot be empty.");
+            }
+            return new FindCommand(words[1].trim());
+        default:
+            // Step 2: Throw with the original command word, not lowercased
+            throw new BobletException("Unknown command: " + rawAction);
         }
     }
 

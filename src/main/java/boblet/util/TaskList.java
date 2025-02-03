@@ -1,10 +1,11 @@
 package boblet.util;
 
 import java.util.ArrayList;
+
 import boblet.task.Task;
 
 /**
- * Represents a list of tasks. Provides methods to manage tasks such as adding, retrieving, 
+ * Represents a list of tasks. Provides methods to manage tasks such as adding, retrieving,
  * deleting, and getting the total number of tasks.
  */
 public class TaskList {
@@ -73,6 +74,12 @@ public class TaskList {
         return tasks;
     }
 
+    /**
+     * Finds and returns a list of tasks that contain the given keyword.
+     *
+     * @param keyword The keyword to search for in task descriptions.
+     * @return A list of matching tasks.
+     */
     public ArrayList<Task> findTasks(String keyword) {
         ArrayList<Task> matchingTasks = new ArrayList<>();
         for (Task task : tasks) {
@@ -82,5 +89,4 @@ public class TaskList {
         }
         return matchingTasks;
     }
-    
 }

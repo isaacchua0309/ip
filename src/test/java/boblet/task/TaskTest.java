@@ -2,7 +2,9 @@ package boblet.task;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TaskTest {
 
@@ -18,7 +20,7 @@ class TaskTest {
     void testMarkAsDone() {
         Task task = new Todo("Sample Task");
         assertFalse(task.isDone(), "Task should not be marked as done initially.");
-        
+
         task.markAsDone();
         assertTrue(task.isDone(), "Task should be marked as done after calling markAsDone.");
     }
@@ -28,7 +30,7 @@ class TaskTest {
         // Test the string representation of a task
         Task task = new Todo("Sample Task");
         assertEquals("[TODO][✗] Sample Task", task.toString(), "String format for incomplete task is incorrect.");
-        
+
         task.markAsDone();
         assertEquals("[TODO][✓] Sample Task", task.toString(), "String format for completed task is incorrect.");
     }
