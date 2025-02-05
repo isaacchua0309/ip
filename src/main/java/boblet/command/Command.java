@@ -21,7 +21,7 @@ public abstract class Command {
     public abstract String execute(TaskList tasks, Storage storage) throws BobletException;
 
     /**
-     * Indicates whether this command causes the program to exit.
+     * Indicates whether this command makes the program exit.
      *
      * @return {@code true} if the command causes the program to exit, {@code false} otherwise.
      */
