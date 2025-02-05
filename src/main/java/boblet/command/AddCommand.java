@@ -6,7 +6,6 @@ import boblet.exception.BobletException;
 import boblet.task.Task;
 import boblet.util.Storage;
 import boblet.util.TaskList;
-import boblet.util.Ui;
 
 /**
  * Represents a command to add a task to the task list.
@@ -34,7 +33,7 @@ public class AddCommand extends Command {
      * @throws BobletException If saving to storage fails.
      */
     @Override
-    public String execute(TaskList tasks, Ui ui, Storage storage) throws BobletException {
+    public String execute(TaskList tasks, Storage storage) throws BobletException {
         tasks.addTask(task);
         String response = "Got it. I've added this task:\n"
                         + "  " + task + "\n"

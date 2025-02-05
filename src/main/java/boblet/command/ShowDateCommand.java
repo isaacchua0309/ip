@@ -11,7 +11,6 @@ import boblet.task.Event;
 import boblet.task.Task;
 import boblet.util.Storage;
 import boblet.util.TaskList;
-import boblet.util.Ui;
 
 /**
  * Represents a command to display tasks scheduled for a specific date.
@@ -43,7 +42,7 @@ public class ShowDateCommand extends Command {
      * @return A response listing tasks for the specified date or indicating none were found.
      */
     @Override
-    public String execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Storage storage) {
         StringBuilder response = new StringBuilder("Tasks scheduled for ")
                 .append(date.format(DateTimeFormatter.ofPattern("MMM dd yyyy"))).append(":\n");
 

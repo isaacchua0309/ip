@@ -3,7 +3,6 @@ package boblet.command;
 import boblet.exception.BobletException;
 import boblet.util.Storage;
 import boblet.util.TaskList;
-import boblet.util.Ui;
 
 /**
  * Represents an abstract command to be executed in the application.
@@ -20,7 +19,7 @@ public abstract class Command {
      * @param storage The storage to persist changes.
      * @throws BobletException If an error occurs during command execution.
      */
-    public abstract String execute(TaskList tasks, Ui ui, Storage storage) throws BobletException;
+    public abstract String execute(TaskList tasks, Storage storage) throws BobletException;
 
     /**
      * Indicates whether this command causes the program to exit.

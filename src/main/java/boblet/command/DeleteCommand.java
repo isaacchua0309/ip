@@ -6,7 +6,6 @@ import boblet.exception.BobletException;
 import boblet.task.Task;
 import boblet.util.Storage;
 import boblet.util.TaskList;
-import boblet.util.Ui;
 
 /**
  * Represents a command to delete a task from the task list.
@@ -38,7 +37,7 @@ public class DeleteCommand extends Command {
      * @throws BobletException If the index is out of range or an error occurs during file I/O.
      */
     @Override
-    public String execute(TaskList tasks, Ui ui, Storage storage) throws BobletException {
+    public String execute(TaskList tasks, Storage storage) throws BobletException {
         if (index < 0 || index >= tasks.size()) {
             throw new BobletException("Task number out of range.");
         }

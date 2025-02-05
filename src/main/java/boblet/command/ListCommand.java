@@ -2,7 +2,6 @@ package boblet.command;
 
 import boblet.util.Storage;
 import boblet.util.TaskList;
-import boblet.util.Ui;
 
 /**
  * Represents a command to display all tasks in the task list.
@@ -19,7 +18,7 @@ public class ListCommand extends Command {
      * @return A response listing all tasks or a message if the task list is empty.
      */
     @Override
-    public String execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Storage storage) {
         if (tasks.size() == 0) {
             return "Your task list is empty!";
         }

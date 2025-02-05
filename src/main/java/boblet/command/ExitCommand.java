@@ -2,7 +2,6 @@ package boblet.command;
 
 import boblet.util.Storage;
 import boblet.util.TaskList;
-import boblet.util.Ui;
 
 /**
  * Represents a command to exit the application.
@@ -18,7 +17,7 @@ public class ExitCommand extends Command {
      * @return A farewell message.
      */
     @Override
-    public String execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Storage storage) {
         return "Bye! See you soon!";
     }
 

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import boblet.task.Task;
 import boblet.util.Storage;
 import boblet.util.TaskList;
-import boblet.util.Ui;
 
 /**
  * Represents a command to find tasks containing a given keyword.
@@ -31,7 +30,7 @@ public class FindCommand extends Command {
      * @return A response message listing matching tasks or indicating none were found.
      */
     @Override
-    public String execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Storage storage) {
         ArrayList<Task> matchingTasks = tasks.findTasks(keyword);
 
         if (matchingTasks.isEmpty()) {
