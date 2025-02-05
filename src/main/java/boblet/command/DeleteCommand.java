@@ -31,7 +31,6 @@ public class DeleteCommand extends Command {
      * Executes the delete command by removing the task at the specified index from the task list.
      *
      * @param tasks   The task list to operate on.
-     * @param ui      The UI to display messages to the user.
      * @param storage The storage to persist changes.
      * @return A response message after deleting the task.
      * @throws BobletException If the index is out of range or an error occurs during file I/O.

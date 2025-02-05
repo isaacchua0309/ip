@@ -27,7 +27,6 @@ public class AddCommand extends Command {
      * and returning a response message.
      *
      * @param tasks   The current task list.
-     * @param ui      The UI to display messages.
      * @param storage The storage to save the updated task list.
      * @return The response message.
      * @throws BobletException If saving to storage fails.

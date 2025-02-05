@@ -13,7 +13,6 @@ public class ListCommand extends Command {
      * If the task list is empty, a message indicating this is returned.
      *
      * @param tasks   The task list containing the tasks to display.
-     * @param ui      The UI to display messages.
      * @param storage The storage to persist changes (not used in this command).
      * @return A response listing all tasks or a message if the task list is empty.
      */

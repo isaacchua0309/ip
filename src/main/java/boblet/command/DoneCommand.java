@@ -30,7 +30,6 @@ public class DoneCommand extends Command {
      * Executes the done command by marking the task at the specified index as done.
      *
      * @param tasks   The task list to operate on.
-     * @param ui      The UI to display messages to the user.
      * @param storage The storage to persist changes.
      * @return A response message confirming the task completion.
      * @throws BobletException If the index is out of range or an error occurs during file I/O.

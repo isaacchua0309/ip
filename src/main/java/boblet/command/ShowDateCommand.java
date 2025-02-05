@@ -37,7 +37,6 @@ public class ShowDateCommand extends Command {
      * If no tasks are found for the date, a message indicating this is returned.
      *
      * @param tasks   The task list containing all tasks.
-     * @param ui      The UI to display messages.
      * @param storage The storage to persist changes (not used in this command).
      * @return A response listing tasks for the specified date or indicating none were found.
      */
@@ -49,8 +48,8 @@ public class ShowDateCommand extends Command {
         ArrayList<Task> matchingTasks = new ArrayList<>();
 
         for (Task task : tasks.getAllTasks()) {
-            if ((task instanceof Deadline && ((Deadline) task).isOnDate(date)) ||
-                (task instanceof Event && ((Event) task).isOnDate(date))) {
+            if ((task instanceof Deadline && ((Deadline) task).isOnDate(date))
+                || (task instanceof Event && ((Event) task).isOnDate(date))) {
                 matchingTasks.add(task);
             }
         }

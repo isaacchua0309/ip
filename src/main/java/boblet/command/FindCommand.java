@@ -25,7 +25,6 @@ public class FindCommand extends Command {
      * Executes the find command by searching for tasks that contain the keyword.
      *
      * @param tasks   The task list to search within.
-     * @param ui      The UI to display messages.
      * @param storage The storage (not used in this command).
      * @return A response message listing matching tasks or indicating none were found.
      */
