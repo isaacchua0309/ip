@@ -77,18 +77,13 @@ java {
     }
 }
 
-<<<<<<< HEAD
 checkstyle {
     toolVersion = '10.2'  // Ensure this matches the CheckStyle version
     configFile = file("${rootProject.projectDir}/config/checkstyle/checkstyle.xml")
     configProperties.suppressionFile = file("${rootProject.projectDir}/config/checkstyle/suppressions.xml")
 }
 
-
-=======
 application {
     mainClass.set("boblet.Launcher")
 }
-
->>>>>>> branch-Level-10
 
