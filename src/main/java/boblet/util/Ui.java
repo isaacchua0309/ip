@@ -62,7 +62,7 @@ public class Ui {
      *
      * @param message The message to display.
      */
-    public void showMessage(String message) {
-        System.out.println(message);
+    public String showMessage(String message) {
+        return message;
     }
 }

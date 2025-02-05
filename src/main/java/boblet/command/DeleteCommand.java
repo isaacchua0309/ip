@@ -34,24 +34,27 @@ public class DeleteCommand extends Command {
      * @param tasks   The task list to operate on.
      * @param ui      The UI to display messages to the user.
      * @param storage The storage to persist changes.
+     * @return A response message after deleting the task.
      * @throws BobletException If the index is out of range or an error occurs during file I/O.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws BobletException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws BobletException {
         if (index < 0 || index >= tasks.size()) {
             throw new BobletException("Task number out of range.");
         }
 
         Task task = tasks.deleteTask(index);
-        ui.showMessage("Noted. I've removed this task:");
-        ui.showMessage("  " + task);
-        ui.showMessage("Now you have " + tasks.size() + " tasks in the list.");
+        String response = "Noted. I've removed this task:\n"
+                        + "  " + task + "\n"
+                        + "Now you have " + tasks.size() + " tasks in the list.";
 
         try {
             storage.saveTasks(tasks.getAllTasks());
         } catch (IOException e) {
             throw new BobletException("Failed to save tasks to storage: " + e.getMessage());
         }
+
+        return response;
     }
 
     /**
@@ -61,5 +64,15 @@ public class DeleteCommand extends Command {
      */
     public int getTaskIndex() {
         return this.index;
+    }
+
+    /**
+     * Returns false since deleting a task does not exit the application.
+     *
+     * @return False, since the command does not terminate the program.
+     */
+    @Override
+    public boolean isExit() {
+        return false;
     }
 }

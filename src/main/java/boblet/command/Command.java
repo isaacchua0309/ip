@@ -20,7 +20,7 @@ public abstract class Command {
      * @param storage The storage to persist changes.
      * @throws BobletException If an error occurs during command execution.
      */
-    public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws BobletException;
+    public abstract String execute(TaskList tasks, Ui ui, Storage storage) throws BobletException;
 
     /**
      * Indicates whether this command causes the program to exit.
