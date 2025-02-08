@@ -1,13 +1,15 @@
 package boblet.task;
 
+import java.util.Objects;
+
 /**
  * Represents an abstract base class for tasks.
  * A task has a description, a completion status, and a specific type.
  */
 public abstract class Task {
-    private final String description;
-    private boolean isDone;
-    private final TaskType type;
+    protected String description;
+    protected boolean isDone;
+    protected TaskType type;
 
     /**
      * Constructs a Task with the specified description and type.
@@ -17,33 +19,12 @@ public abstract class Task {
      * @param type        The type of the task.
      */
     public Task(String description, TaskType type) {
-        this.description = validateDescription(description);
-        this.type = validateType(type);
-        this.isDone = false;
-    }
-
-    /**
-     * Validates the task description.
-     *
-     * @param description The task description.
-     * @return The validated description.
-     * @throws IllegalArgumentException If the description is null or empty.
-     */
-    private static String validateDescription(String description) {
         assert description != null && !description.trim().isEmpty() : "Task description should not be empty";
-        return description.trim();
-    }
-
-    /**
-     * Validates the task type.
-     *
-     * @param type The task type.
-     * @return The validated task type.
-     * @throws IllegalArgumentException If the task type is null.
-     */
-    private static TaskType validateType(TaskType type) {
         assert type != null : "Task type should not be null";
-        return type;
+
+        this.description = description;
+        this.isDone = false;
+        this.type = type;
     }
 
     /**
@@ -52,7 +33,6 @@ public abstract class Task {
      * @return The task description.
      */
     public String getDescription() {
-        assert description != null : "Task description should never be null";
         return description;
     }
 
@@ -71,7 +51,6 @@ public abstract class Task {
      * @return The task type.
      */
     public TaskType getType() {
-        assert type != null : "Task type should never be null";
         return type;
     }
 
@@ -91,8 +70,32 @@ public abstract class Task {
      */
     @Override
     public String toString() {
-        assert description != null : "Task description should never be null in toString";
-        assert type != null : "Task type should never be null in toString";
         return "[" + type + "][" + (isDone ? "✓" : "✗") + "] " + description;
+    }
+
+    /**
+     * Defines equality for tasks: Two tasks are considered equal if they have the same type and description.
+     * This ensures that a deleted task does not interfere with the duplicate detection logic.
+     *
+     * @param obj The object to compare against.
+     * @return True if the tasks are the same, false otherwise.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true; // Same memory reference
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Task task = (Task) obj;
+        return Objects.equals(description, task.description) && type == task.type;
+    }
+
+    /**
+     * Ensures the hashcode is consistent with equals() to avoid issues in collections.
+     *
+     * @return Hashcode representation of the task.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(description, type);
     }
 }

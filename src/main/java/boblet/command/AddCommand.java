@@ -38,16 +38,19 @@ public class AddCommand extends Command {
         assert storage != null : "Storage should not be null before execution";
         assert task != null : "Task to add should not be null";
 
-        tasks.addTask(task);
-        assert tasks.getTask(tasks.size() - 1).equals(task) : "Task should be successfully added to the list";
-
-        String response = String.format("Got it. I've added this task:\n  %s\nNow you have %d tasks in the list.",
-                task, tasks.size());
+        String response;
 
         try {
+            tasks.addTask(task); // Add the task once
             storage.saveTasks(tasks.getAllTasks());
+
+            response = String.format("Got it. I've added this task:\n  %s\nNow you have %d tasks in the list.",
+                    task, tasks.size());
+
+        } catch (BobletException e) {
+            response = e.getMessage(); // Return the duplicate task message
         } catch (IOException e) {
-            throw new BobletException("Failed to save tasks to storage: " + e.getMessage());
+            response = "Failed to save tasks: " + e.getMessage();
         }
 
         return response;
