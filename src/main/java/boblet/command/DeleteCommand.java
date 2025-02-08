@@ -42,8 +42,8 @@ public class DeleteCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Storage storage) throws BobletException {
-        assert tasks != null : "Task list should not be null";
-        assert storage != null : "Storage should not be null";
+        assert tasks != null : "Task list should not be null before execution";
+        assert storage != null : "Storage should not be null before execution";
         assert index >= 0 && index < tasks.size() : "Index should be within valid task list bounds";
 
         if (index < 0 || index >= tasks.size()) {
@@ -53,9 +53,8 @@ public class DeleteCommand extends Command {
         Task task = tasks.deleteTask(index);
         assert task != null : "Deleted task should not be null";
 
-        String response = "Noted. I've removed this task:\n"
-                        + "  " + task + "\n"
-                        + "Now you have " + tasks.size() + " tasks in the list.";
+        String response = String.format("Noted. I've removed this task:\n  %s\nNow you have %d tasks in the list.",
+                task, tasks.size());
 
         try {
             storage.saveTasks(tasks.getAllTasks());
@@ -72,6 +71,7 @@ public class DeleteCommand extends Command {
      * @return The 0-based index of the task.
      */
     public int getTaskIndex() {
+        assert index >= 0 : "Task index should always be non-negative";
         return this.index;
     }
 
@@ -82,7 +82,6 @@ public class DeleteCommand extends Command {
      */
     @Override
     public boolean isExit() {
-        assert true : "DeleteCommand should always return false for isExit()";
-        return false;
+        return false; // No assertion needed as this will always be false
     }
 }

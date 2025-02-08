@@ -6,6 +6,7 @@ import boblet.exception.BobletException;
 import boblet.task.Task;
 import boblet.util.Storage;
 import boblet.util.TaskList;
+
 /**
  * Represents a command to mark a task as done in the task list.
  */
@@ -19,11 +20,15 @@ public class DoneCommand extends Command {
      * @throws BobletException If the provided index is invalid or not a number.
      */
     public DoneCommand(String index) throws BobletException {
+        assert index != null && !index.trim().isEmpty() : "Index input should not be null or empty";
+
         try {
             this.index = Integer.parseInt(index.trim()) - 1; // Convert to 0-based index
         } catch (NumberFormatException e) {
             throw new BobletException("Invalid task number.");
         }
+
+        assert this.index >= 0 : "Converted task index should not be negative";
     }
 
     /**
@@ -36,13 +41,16 @@ public class DoneCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Storage storage) throws BobletException {
-        assert tasks != null : "Task list should not be null";
-        assert index >= 0 && index < tasks.size() : "Invalid task index";
+        assert tasks != null : "Task list should not be null before execution";
+        assert storage != null : "Storage should not be null before execution";
+
         if (index < 0 || index >= tasks.size()) {
             throw new BobletException("Task number out of range.");
         }
 
         Task task = tasks.getTask(index);
+        assert task != null : "Task at given index should not be null";
+
         task.markAsDone();
 
         String response = "Nice! I've marked this task as done:\n  " + task;
@@ -62,6 +70,7 @@ public class DoneCommand extends Command {
      * @return The 0-based index of the task.
      */
     public int getTaskIndex() {
+        assert index >= 0 : "Task index should always be non-negative";
         return this.index;
     }
 
@@ -72,6 +81,6 @@ public class DoneCommand extends Command {
      */
     @Override
     public boolean isExit() {
-        return false;
+        return false; // No assertion needed as this will always be false
     }
 }

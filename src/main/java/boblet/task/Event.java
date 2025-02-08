@@ -13,7 +13,7 @@ import java.util.Locale;
  * Extends the Task class and adds an event date/time field.
  */
 public class Event extends Task {
-    private LocalDateTime at;
+    private final LocalDateTime at;
 
     /**
      * Constructs an Event task with the given description and event date/time.
@@ -23,12 +23,33 @@ public class Event extends Task {
      * @throws IllegalArgumentException If the provided date/time format is invalid.
      */
     public Event(String description, String at) {
-        super(description, TaskType.EVENT);
-        assert description != null && !description.trim().isEmpty() : "Task description should not be null or empty";
-        assert at != null && !at.trim().isEmpty() : "Event date/time should not be null or empty";
-
-        this.at = parseDateTime(at);
+        super(validateDescription(description), TaskType.EVENT);
+        this.at = parseDateTime(validateDateTime(at));
         assert this.at != null : "Parsed event date/time should not be null";
+    }
+
+    /**
+     * Validates the description input.
+     *
+     * @param description The task description.
+     * @return The validated description.
+     * @throws IllegalArgumentException If the description is null or empty.
+     */
+    private static String validateDescription(String description) {
+        assert description != null && !description.trim().isEmpty() : "Task description should not be null or empty";
+        return description.trim();
+    }
+
+    /**
+     * Validates the date/time input.
+     *
+     * @param dateTime The event date/time.
+     * @return The validated date/time string.
+     * @throws IllegalArgumentException If the date/time input is null or empty.
+     */
+    private static String validateDateTime(String dateTime) {
+        assert dateTime != null && !dateTime.trim().isEmpty() : "Event date/time should not be null or empty";
+        return dateTime.trim();
     }
 
     /**
@@ -39,28 +60,17 @@ public class Event extends Task {
      * @return A LocalDateTime object parsed from the input.
      * @throws IllegalArgumentException If the input does not match any supported format.
      */
-    private LocalDateTime parseDateTime(String dateTime) {
-        assert dateTime != null && !dateTime.trim().isEmpty() : "Input date/time string should not be null or empty";
-        
-        String normalizedDateTime = dateTime.trim();
+    private static LocalDateTime parseDateTime(String dateTime) {
+        assert dateTime != null && !dateTime.isEmpty() : "Input date/time string should not be null or empty";
 
-        // List of supported date/time formats
-        List<DateTimeFormatter> formats = new ArrayList<>();
-        formats.add(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.ENGLISH));
-        formats.add(DateTimeFormatter.ofPattern("MMM d yyyy h:mma", Locale.ENGLISH));
-        formats.add(DateTimeFormatter.ofPattern("d/M/yyyy HHmm", Locale.ENGLISH));
-        formats.add(DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm a", Locale.ENGLISH));
-        formats.add(DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH));
-        formats.add(DateTimeFormatter.ofPattern("MMM d yyyy", Locale.ENGLISH));
-        formats.add(DateTimeFormatter.ofPattern("d/M/yyyy", Locale.ENGLISH));
+        List<DateTimeFormatter> formats = getSupportedFormats();
 
-        // Attempt to parse with each formatter
         for (DateTimeFormatter formatter : formats) {
             try {
-                return LocalDateTime.parse(normalizedDateTime, formatter);
+                return LocalDateTime.parse(dateTime, formatter);
             } catch (DateTimeParseException e1) {
                 try {
-                    LocalDate date = LocalDate.parse(normalizedDateTime, formatter);
+                    LocalDate date = LocalDate.parse(dateTime, formatter);
                     return date.atStartOfDay();
                 } catch (DateTimeParseException e2) {
                     // Continue trying the next format
@@ -69,6 +79,23 @@ public class Event extends Task {
         }
 
         throw new IllegalArgumentException("Invalid date/time format: " + dateTime);
+    }
+
+    /**
+     * Retrieves the list of supported date/time formats.
+     *
+     * @return A list of DateTimeFormatter objects.
+     */
+    private static List<DateTimeFormatter> getSupportedFormats() {
+        List<DateTimeFormatter> formats = new ArrayList<>();
+        formats.add(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.ENGLISH));
+        formats.add(DateTimeFormatter.ofPattern("MMM d yyyy h:mma", Locale.ENGLISH));
+        formats.add(DateTimeFormatter.ofPattern("d/M/yyyy HHmm", Locale.ENGLISH));
+        formats.add(DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm a", Locale.ENGLISH));
+        formats.add(DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH));
+        formats.add(DateTimeFormatter.ofPattern("MMM d yyyy", Locale.ENGLISH));
+        formats.add(DateTimeFormatter.ofPattern("d/M/yyyy", Locale.ENGLISH));
+        return formats;
     }
 
     /**

@@ -1,13 +1,7 @@
 package boblet.util;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
-
 import boblet.exception.BobletException;
 import boblet.task.Deadline;
 import boblet.task.Event;
@@ -15,8 +9,7 @@ import boblet.task.Task;
 import boblet.task.Todo;
 
 /**
- * The Storage class handles the loading and saving of tasks to and from a file.
- * It ensures persistence of tasks between sessions of the Boblet application.
+ * Handles loading and saving tasks to a file for persistence between sessions.
  */
 public class Storage {
     private final String filePath;
@@ -25,6 +18,7 @@ public class Storage {
      * Constructs a Storage object with the specified file path.
      *
      * @param filePath The file path for storing task data.
+     * @throws IllegalArgumentException If the file path is null or empty.
      */
     public Storage(String filePath) {
         assert filePath != null && !filePath.trim().isEmpty() : "File path should not be null or empty";
@@ -34,7 +28,7 @@ public class Storage {
     /**
      * Loads tasks from the file. Creates a new file if it doesn't exist.
      *
-     * @return List of tasks loaded from the file.
+     * @return A list of tasks loaded from the file.
      * @throws IOException      If there are issues with file I/O.
      * @throws BobletException  If the file content is corrupted or invalid.
      */
@@ -48,7 +42,7 @@ public class Storage {
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    assert line.trim().length() > 0 : "Loaded line should not be empty";
+                    assert !line.trim().isEmpty() : "Loaded line should not be empty";
                     tasks.add(parseTask(line));
                 }
             } catch (IOException | BobletException e) {
@@ -61,7 +55,7 @@ public class Storage {
     /**
      * Saves tasks to the file.
      *
-     * @param tasks List of tasks to save.
+     * @param tasks The list of tasks to save.
      * @throws IOException If there are issues writing to the file.
      */
     public void saveTasks(ArrayList<Task> tasks) throws IOException {
@@ -96,37 +90,31 @@ public class Storage {
         String description = parts[2];
 
         switch (type) {
-        case "T":
-            assert description != null && !description.trim().isEmpty() : "Todo description should not be empty";
-            Todo todo = new Todo(description);
-            if (isDone) {
-                todo.markAsDone();
-            }
-            return todo;
+            case "T":
+                assert !description.trim().isEmpty() : "Todo description should not be empty";
+                Todo todo = new Todo(description);
+                if (isDone) todo.markAsDone();
+                return todo;
 
-        case "D":
-            validateParts(parts, 4, "deadline");
-            Deadline deadline = new Deadline(description, parts[3]);
-            if (isDone) {
-                deadline.markAsDone();
-            }
-            return deadline;
+            case "D":
+                validateParts(parts, 4, "deadline");
+                Deadline deadline = new Deadline(description, parts[3]);
+                if (isDone) deadline.markAsDone();
+                return deadline;
 
-        case "E":
-            validateParts(parts, 4, "event");
-            Event event = new Event(description, parts[3]);
-            if (isDone) {
-                event.markAsDone();
-            }
-            return event;
+            case "E":
+                validateParts(parts, 4, "event");
+                Event event = new Event(description, parts[3]);
+                if (isDone) event.markAsDone();
+                return event;
 
-        default:
-            throw new BobletException("Unknown task type.");
+            default:
+                throw new BobletException("Unknown task type.");
         }
     }
 
     /**
-     * Serializes a Task object into a String for saving to the file.
+     * Serializes a Task object into a string for saving to the file.
      *
      * @param task The task to serialize.
      * @return String representation of the task.
@@ -174,7 +162,7 @@ public class Storage {
         assert file != null : "File should not be null";
 
         File parentDir = file.getParentFile();
-        if (!parentDir.exists() && !parentDir.mkdirs()) {
+        if (parentDir != null && !parentDir.exists() && !parentDir.mkdirs()) {
             throw new IOException("Failed to create directory for file: " + filePath);
         }
         if (!file.createNewFile()) {
