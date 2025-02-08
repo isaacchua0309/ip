@@ -1,7 +1,8 @@
 package boblet.util;
 
 import java.util.ArrayList;
-
+import java.util.stream.Collectors;
+import boblet.exception.BobletException;
 import boblet.task.Task;
 
 /**
@@ -30,13 +31,19 @@ public class TaskList {
     }
 
     /**
-     * Adds a task to the list.
+     * Adds a task to the list, ensuring no duplicate tasks are added.
      *
      * @param task The task to add.
-     * @throws IllegalArgumentException If the provided task is null.
+     * @throws BobletException If the provided task is null or already exists in the list.
      */
-    public void addTask(Task task) {
+    public void addTask(Task task) throws BobletException {
         assert task != null : "Task to be added should not be null";
+
+        // Check if the exact task already exists in the list
+        if (tasks.contains(task)) {
+            throw new BobletException("Duplicate task detected! Task already exists in your list.");
+        }
+
         tasks.add(task);
     }
 
@@ -93,14 +100,9 @@ public class TaskList {
     public ArrayList<Task> findTasks(String keyword) {
         assert keyword != null && !keyword.trim().isEmpty() : "Search keyword should not be null or empty";
 
-        ArrayList<Task> matchingTasks = new ArrayList<>();
-        for (Task task : tasks) {
-            assert task != null : "Task in list should not be null";
-            if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
-                matchingTasks.add(task);
-            }
-        }
-        return matchingTasks;
+        return tasks.stream()
+                .filter(task -> task.getDescription().toLowerCase().contains(keyword.toLowerCase()))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
