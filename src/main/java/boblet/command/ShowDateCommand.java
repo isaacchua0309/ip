@@ -3,7 +3,8 @@ package boblet.command;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import boblet.exception.BobletException;
 import boblet.task.Deadline;
@@ -49,29 +50,24 @@ public class ShowDateCommand extends Command {
         assert tasks != null : "TaskList should not be null";
         assert storage != null : "Storage should not be null";
 
-        StringBuilder response = new StringBuilder("Tasks scheduled for ")
-                .append(date.format(DateTimeFormatter.ofPattern("MMM dd yyyy"))).append(":\n");
-
-        ArrayList<Task> matchingTasks = new ArrayList<>();
-
-        for (Task task : tasks.getAllTasks()) {
-            assert task != null : "Task in TaskList should not be null";
-
-            if ((task instanceof Deadline && ((Deadline) task).isOnDate(date))
-                || (task instanceof Event && ((Event) task).isOnDate(date))) {
-                matchingTasks.add(task);
-            }
-        }
+        List<Task> matchingTasks = tasks.getAllTasks().stream()
+                .peek(task -> {
+                    assert task != null : "Task in TaskList should not be null";
+                })
+                .filter(task -> (task instanceof Deadline && ((Deadline) task).isOnDate(date))
+                        || (task instanceof Event && ((Event) task).isOnDate(date)))
+                .collect(Collectors.toList());
 
         if (matchingTasks.isEmpty()) {
             return "No tasks found for this date.";
         }
 
-        for (int i = 0; i < matchingTasks.size(); i++) {
-            response.append(i + 1).append(". ").append(matchingTasks.get(i)).append("\n");
-        }
+        String taskList = matchingTasks.stream()
+                .map(task -> (matchingTasks.indexOf(task) + 1) + ". " + task)
+                .collect(Collectors.joining("\n"));
 
-        return response.toString().trim();
+        return String.format("Tasks scheduled for %s:\n%s", 
+                date.format(DateTimeFormatter.ofPattern("MMM dd yyyy")), taskList);
     }
 
     /**
