@@ -34,13 +34,15 @@ public class AddCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Storage storage) throws BobletException {
-        assert tasks != null : "TaskList should not be null";
-        assert storage != null : "Storage should not be null";
+        assert tasks != null : "TaskList should not be null before execution";
+        assert storage != null : "Storage should not be null before execution";
+        assert task != null : "Task to add should not be null";
 
         tasks.addTask(task);
-        String response = "Got it. I've added this task:\n"
-                        + "  " + task + "\n"
-                        + "Now you have " + tasks.size() + " tasks in the list.";
+        assert tasks.getTask(tasks.size() - 1).equals(task) : "Task should be successfully added to the list";
+
+        String response = String.format("Got it. I've added this task:\n  %s\nNow you have %d tasks in the list.",
+                task, tasks.size());
 
         try {
             storage.saveTasks(tasks.getAllTasks());

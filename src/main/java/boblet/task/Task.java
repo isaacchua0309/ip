@@ -5,9 +5,9 @@ package boblet.task;
  * A task has a description, a completion status, and a specific type.
  */
 public abstract class Task {
-    protected String description;
-    protected boolean isDone;
-    protected TaskType type;
+    private final String description;
+    private boolean isDone;
+    private final TaskType type;
 
     /**
      * Constructs a Task with the specified description and type.
@@ -17,12 +17,33 @@ public abstract class Task {
      * @param type        The type of the task.
      */
     public Task(String description, TaskType type) {
-        assert description != null && !description.trim().isEmpty() : "Task description should not be empty";
-        assert type != null : "Task type should not be null";
-
-        this.description = description;
+        this.description = validateDescription(description);
+        this.type = validateType(type);
         this.isDone = false;
-        this.type = type;
+    }
+
+    /**
+     * Validates the task description.
+     *
+     * @param description The task description.
+     * @return The validated description.
+     * @throws IllegalArgumentException If the description is null or empty.
+     */
+    private static String validateDescription(String description) {
+        assert description != null && !description.trim().isEmpty() : "Task description should not be empty";
+        return description.trim();
+    }
+
+    /**
+     * Validates the task type.
+     *
+     * @param type The task type.
+     * @return The validated task type.
+     * @throws IllegalArgumentException If the task type is null.
+     */
+    private static TaskType validateType(TaskType type) {
+        assert type != null : "Task type should not be null";
+        return type;
     }
 
     /**

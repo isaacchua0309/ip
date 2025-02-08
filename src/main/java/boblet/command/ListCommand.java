@@ -21,11 +21,18 @@ public class ListCommand extends Command {
         assert tasks != null : "TaskList should not be null";
         assert storage != null : "Storage should not be null";
 
-        if (tasks.size() == 0) {
-            return "Your task list is empty!";
-        }
+        return tasks.size() == 0 ? "Your task list is empty!" : formatTaskList(tasks);
+    }
 
+    /**
+     * Formats the task list into a readable string.
+     *
+     * @param tasks The task list containing all tasks.
+     * @return A formatted string of tasks.
+     */
+    private String formatTaskList(TaskList tasks) {
         StringBuilder response = new StringBuilder("Here are your tasks:\n");
+
         for (int i = 0; i < tasks.size(); i++) {
             assert tasks.getTask(i) != null : "Task at index " + i + " should not be null";
             response.append(i + 1).append(". ").append(tasks.getTask(i)).append("\n");

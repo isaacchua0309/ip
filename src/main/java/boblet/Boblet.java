@@ -13,7 +13,7 @@ import boblet.util.TaskList;
  * Handles the initialization of components and the main program flow.
  */
 public class Boblet {
-    private Storage storage;
+    private final Storage storage;
     private TaskList tasks;
 
     /**
@@ -24,15 +24,16 @@ public class Boblet {
     public Boblet(String filePath) {
         assert filePath != null && !filePath.trim().isEmpty() : "File path should not be null or empty";
 
-        storage = new Storage(filePath);
+        this.storage = new Storage(filePath);
+        assert this.storage != null : "Storage should never be null";
+
         try {
-            tasks = new TaskList(storage.loadTasks());
+            this.tasks = new TaskList(storage.loadTasks());
         } catch (IOException | BobletException e) {
-            tasks = new TaskList();
+            this.tasks = new TaskList();
         }
 
-        assert storage != null : "Storage should never be null";
-        assert tasks != null : "TaskList should never be null";
+        assert this.tasks != null : "TaskList should never be null";
     }
 
     /**
@@ -45,11 +46,11 @@ public class Boblet {
         assert input != null && !input.trim().isEmpty() : "User input should not be null or empty";
         
         try {
-            Command command = Parser.parse(input); // Parse the command
+            Command command = Parser.parse(input);
             assert command != null : "Parsed command should never be null";
-            return command.execute(tasks, storage); // Execute and return response
+            return command.execute(tasks, storage);
         } catch (BobletException e) {
-            return e.getMessage(); // Return error message
+            return e.getMessage();
         }
     }
 }
