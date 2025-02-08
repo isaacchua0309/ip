@@ -27,8 +27,11 @@ public class Parser {
      * @throws BobletException If the input command is unknown or invalid.
      */
     public static Command parse(String input) throws BobletException {
+        assert input != null : "User input should not be null";
+
         // Step 1: Split the input
         String[] words = input.split(" ", 2);
+        assert words.length > 0 : "Input split should contain at least one element";
 
         // Keep the original for error messages
         String rawAction = words[0];
@@ -41,8 +44,10 @@ public class Parser {
         case "list":
             return new ListCommand();
         case "done":
+            assert words.length > 1 : "Done command must have a task index";
             return new DoneCommand(words[1]);
         case "delete":
+            assert words.length > 1 : "Delete command must have a task index";
             return new DeleteCommand(words[1]);
         case "todo":
             return parseTodoCommand(words);
@@ -51,6 +56,7 @@ public class Parser {
         case "event":
             return parseEventCommand(words);
         case "showdate":
+            assert words.length > 1 : "ShowDate command must have a date argument";
             return new ShowDateCommand(words[1]);
         case "find":
             if (words.length < 2 || words[1].trim().isEmpty()) {
@@ -58,7 +64,6 @@ public class Parser {
             }
             return new FindCommand(words[1].trim());
         default:
-            // Step 2: Throw with the original command word, not lowercased
             throw new BobletException("Unknown command: " + rawAction);
         }
     }
@@ -71,6 +76,9 @@ public class Parser {
      * @throws BobletException If the description is missing or empty.
      */
     private static Command parseTodoCommand(String[] words) throws BobletException {
+        assert words != null : "words array should not be null";
+        assert words.length > 0 : "words array should have at least one element";
+
         if (words.length < 2 || words[1].trim().isEmpty()) {
             throw new BobletException("The description of a todo cannot be empty.");
         }
@@ -85,10 +93,15 @@ public class Parser {
      * @throws BobletException If the description or date/time is missing or invalid.
      */
     private static Command parseDeadlineCommand(String[] words) throws BobletException {
+        assert words != null : "words array should not be null";
+        assert words.length > 0 : "words array should have at least one element";
+
         if (words.length < 2 || words[1].trim().isEmpty()) {
             throw new BobletException("The description or deadline of a deadline cannot be empty.");
         }
         String[] parts = words[1].split(" /by ", 2);
+        assert parts.length > 0 : "Deadline command should have at least one part";
+
         if (parts.length < 2) {
             throw new BobletException("The deadline must specify a date/time using the '/by' keyword.");
         }
@@ -103,10 +116,15 @@ public class Parser {
      * @throws BobletException If the description or date/time is missing or invalid.
      */
     private static Command parseEventCommand(String[] words) throws BobletException {
+        assert words != null : "words array should not be null";
+        assert words.length > 0 : "words array should have at least one element";
+
         if (words.length < 2 || words[1].trim().isEmpty()) {
             throw new BobletException("The description or time of an event cannot be empty.");
         }
         String[] parts = words[1].split(" /at ", 2);
+        assert parts.length > 0 : "Event command should have at least one part";
+
         if (parts.length < 2) {
             throw new BobletException("The event must specify a date/time using the '/at' keyword.");
         }

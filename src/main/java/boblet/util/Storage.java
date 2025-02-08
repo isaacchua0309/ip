@@ -27,6 +27,7 @@ public class Storage {
      * @param filePath The file path for storing task data.
      */
     public Storage(String filePath) {
+        assert filePath != null && !filePath.trim().isEmpty() : "File path should not be null or empty";
         this.filePath = filePath;
     }
 
@@ -47,6 +48,7 @@ public class Storage {
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
+                    assert line.trim().length() > 0 : "Loaded line should not be empty";
                     tasks.add(parseTask(line));
                 }
             } catch (IOException | BobletException e) {
@@ -63,8 +65,11 @@ public class Storage {
      * @throws IOException If there are issues writing to the file.
      */
     public void saveTasks(ArrayList<Task> tasks) throws IOException {
+        assert tasks != null : "Task list should not be null";
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (Task task : tasks) {
+                assert task != null : "Task should not be null";
                 writer.write(serializeTask(task));
                 writer.newLine();
             }
@@ -79,6 +84,8 @@ public class Storage {
      * @throws BobletException If the line format is invalid.
      */
     private Task parseTask(String line) throws BobletException {
+        assert line != null && !line.trim().isEmpty() : "Parsed line should not be null or empty";
+
         String[] parts = line.split(" \\| ");
         if (parts.length < 3) {
             throw new BobletException("Invalid task format.");
@@ -90,6 +97,7 @@ public class Storage {
 
         switch (type) {
         case "T":
+            assert description != null && !description.trim().isEmpty() : "Todo description should not be empty";
             Todo todo = new Todo(description);
             if (isDone) {
                 todo.markAsDone();
@@ -124,6 +132,8 @@ public class Storage {
      * @return String representation of the task.
      */
     private String serializeTask(Task task) {
+        assert task != null : "Task to serialize should not be null";
+
         String base = String.format("%s | %d | %s",
                 task.getType().name().charAt(0),
                 task.isDone() ? 1 : 0,
@@ -146,6 +156,9 @@ public class Storage {
      * @throws BobletException If the parts array does not meet the requirement.
      */
     private void validateParts(String[] parts, int required, String taskType) throws BobletException {
+        assert parts != null : "Parts array should not be null";
+        assert taskType != null && !taskType.trim().isEmpty() : "Task type should not be null or empty";
+
         if (parts.length != required) {
             throw new BobletException("Invalid " + taskType + " format.");
         }
@@ -158,6 +171,8 @@ public class Storage {
      * @throws IOException If there are issues creating the file or directories.
      */
     private void createFile(File file) throws IOException {
+        assert file != null : "File should not be null";
+
         File parentDir = file.getParentFile();
         if (!parentDir.exists() && !parentDir.mkdirs()) {
             throw new IOException("Failed to create directory for file: " + filePath);

@@ -87,3 +87,7 @@ application {
     mainClass.set("boblet.Launcher")
 }
 
+tasks.withType(Jar) {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+

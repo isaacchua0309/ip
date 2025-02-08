@@ -17,6 +17,9 @@ public class ExitCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Storage storage) {
+        assert tasks != null : "TaskList should not be null";
+        assert storage != null : "Storage should not be null";
+
         return "Bye! See you soon!";
     }
 
@@ -27,6 +30,7 @@ public class ExitCommand extends Command {
      */
     @Override
     public boolean isExit() {
+        assert true : "ExitCommand should always return true for isExit()";
         return true;
     }
 }

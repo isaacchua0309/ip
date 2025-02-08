@@ -17,6 +17,9 @@ public abstract class Task {
      * @param type        The type of the task.
      */
     public Task(String description, TaskType type) {
+        assert description != null && !description.trim().isEmpty() : "Task description should not be empty";
+        assert type != null : "Task type should not be null";
+
         this.description = description;
         this.isDone = false;
         this.type = type;
@@ -28,6 +31,7 @@ public abstract class Task {
      * @return The task description.
      */
     public String getDescription() {
+        assert description != null : "Task description should never be null";
         return description;
     }
 
@@ -46,6 +50,7 @@ public abstract class Task {
      * @return The task type.
      */
     public TaskType getType() {
+        assert type != null : "Task type should never be null";
         return type;
     }
 
@@ -53,6 +58,7 @@ public abstract class Task {
      * Marks the task as done.
      */
     public void markAsDone() {
+        assert !isDone : "Task should not already be marked as done";
         this.isDone = true;
     }
 
@@ -64,6 +70,8 @@ public abstract class Task {
      */
     @Override
     public String toString() {
+        assert description != null : "Task description should never be null in toString";
+        assert type != null : "Task type should never be null in toString";
         return "[" + type + "][" + (isDone ? "✓" : "✗") + "] " + description;
     }
 }

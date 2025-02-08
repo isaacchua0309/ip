@@ -23,7 +23,11 @@ public class Deadline extends Task {
      */
     public Deadline(String description, String by) {
         super(description, TaskType.DEADLINE);
+        assert description != null && !description.trim().isEmpty() : "Task description should not be null or empty";
+        assert by != null && !by.trim().isEmpty() : "Deadline date/time should not be null or empty";
+        
         this.by = parseDateTime(by);
+        assert this.by != null : "Parsed deadline date/time should not be null";
     }
 
     /**
@@ -35,6 +39,8 @@ public class Deadline extends Task {
      * @throws IllegalArgumentException If the input does not match any supported format.
      */
     private LocalDateTime parseDateTime(String dateTime) {
+        assert dateTime != null && !dateTime.trim().isEmpty() : "Input date/time string should not be null or empty";
+        
         String normalizedDateTime = dateTime.trim();
 
         // List of supported date/time formats
@@ -50,20 +56,17 @@ public class Deadline extends Task {
         // Attempt to parse with each formatter
         for (DateTimeFormatter formatter : formats) {
             try {
-                // Try parsing as a LocalDateTime
                 return LocalDateTime.parse(normalizedDateTime, formatter);
             } catch (DateTimeParseException e1) {
-                // If LocalDateTime fails, try LocalDate
                 try {
                     LocalDate date = LocalDate.parse(normalizedDateTime, formatter);
-                    return date.atStartOfDay(); // Defaults to 00:00 for LocalDate
+                    return date.atStartOfDay();
                 } catch (DateTimeParseException e2) {
                     // Continue trying the next format
                 }
             }
         }
 
-        // If no format matches, throw an exception
         throw new IllegalArgumentException("Invalid date/time format: " + dateTime);
     }
 
@@ -74,6 +77,7 @@ public class Deadline extends Task {
      * @return A formatted string representation of the deadline.
      */
     public String getBy() {
+        assert this.by != null : "Deadline date/time should not be null before formatting";
         return by.format(DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm a", Locale.ENGLISH));
     }
 
@@ -84,6 +88,7 @@ public class Deadline extends Task {
      */
     @Override
     public String toString() {
+        assert this.by != null : "Deadline date/time should not be null before converting to string";
         return super.toString() + " (by: " + getBy() + ")";
     }
 
@@ -94,6 +99,8 @@ public class Deadline extends Task {
      * @return True if the deadline falls on the specified date, false otherwise.
      */
     public boolean isOnDate(LocalDate date) {
+        assert date != null : "Input date should not be null";
+        assert this.by != null : "Deadline date/time should not be null when checking the date";
         return this.by.toLocalDate().equals(date);
     }
 }

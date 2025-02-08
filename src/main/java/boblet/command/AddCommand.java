@@ -19,6 +19,7 @@ public class AddCommand extends Command {
      * @param task The task to add to the task list.
      */
     public AddCommand(Task task) {
+        assert task != null : "Task should not be null";
         this.task = task;
     }
 
@@ -33,6 +34,9 @@ public class AddCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Storage storage) throws BobletException {
+        assert tasks != null : "TaskList should not be null";
+        assert storage != null : "Storage should not be null";
+
         tasks.addTask(task);
         String response = "Got it. I've added this task:\n"
                         + "  " + task + "\n"
@@ -53,6 +57,7 @@ public class AddCommand extends Command {
      * @return The task to be added.
      */
     public Task getTask() {
+        assert task != null : "Task should not be null when retrieved";
         return this.task;
     }
 
