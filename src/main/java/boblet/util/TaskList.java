@@ -1,7 +1,6 @@
 package boblet.util;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import boblet.task.Task;
 
