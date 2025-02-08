@@ -90,27 +90,36 @@ public class Storage {
         String description = parts[2];
 
         switch (type) {
-            case "T":
-                assert !description.trim().isEmpty() : "Todo description should not be empty";
-                Todo todo = new Todo(description);
-                if (isDone) todo.markAsDone();
+        case "T":
+            assert !description.trim().isEmpty() : "Todo description should not be empty";
+            Todo todo = new Todo(description);
+            if (isDone) {
+                todo.markAsDone();
                 return todo;
+            }
+            break;
 
-            case "D":
-                validateParts(parts, 4, "deadline");
-                Deadline deadline = new Deadline(description, parts[3]);
-                if (isDone) deadline.markAsDone();
+        case "D":
+            validateParts(parts, 4, "deadline");
+            Deadline deadline = new Deadline(description, parts[3]);
+            if (isDone) {
+                deadline.markAsDone();
                 return deadline;
+            }
+            break;
 
-            case "E":
-                validateParts(parts, 4, "event");
-                Event event = new Event(description, parts[3]);
-                if (isDone) event.markAsDone();
-                return event;
+        case "E":
+            validateParts(parts, 4, "event");
+            Event event = new Event(description, parts[3]);
+            if (isDone) {
+                event.markAsDone();
+            }
+            return event;
 
-            default:
-                throw new BobletException("Unknown task type.");
+        default:
+            throw new BobletException("Unknown task type.");
         }
+        return new Todo("Dummy Task");
     }
 
     /**

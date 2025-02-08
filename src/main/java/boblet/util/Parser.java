@@ -30,30 +30,30 @@ public class Parser {
         String action = rawAction.toLowerCase();
 
         switch (action) {
-            case "bye":
-                return new ExitCommand();
-            case "list":
-                return new ListCommand();
-            case "done":
-                validateSingleArgCommand(words, "done");
-                return new DoneCommand(words[1]);
-            case "delete":
-                validateSingleArgCommand(words, "delete");
-                return new DeleteCommand(words[1]);
-            case "todo":
-                return parseTodoCommand(words);
-            case "deadline":
-                return parseDeadlineCommand(words);
-            case "event":
-                return parseEventCommand(words);
-            case "showdate":
-                validateSingleArgCommand(words, "showdate");
-                return new ShowDateCommand(words[1]);
-            case "find":
-                validateSingleArgCommand(words, "find");
-                return new FindCommand(words[1].trim());
-            default:
-                throw new BobletException("Unknown command: " + rawAction);
+        case "bye":
+            return new ExitCommand();
+        case "list":
+            return new ListCommand();
+        case "done":
+            validateSingleArgCommand(words, "done");
+            return new DoneCommand(words[1]);
+        case "delete":
+            validateSingleArgCommand(words, "delete");
+            return new DeleteCommand(words[1]);
+        case "todo":
+            return parseTodoCommand(words);
+        case "deadline":
+            return parseDeadlineCommand(words);
+        case "event":
+            return parseEventCommand(words);
+        case "showdate":
+            validateSingleArgCommand(words, "showdate");
+            return new ShowDateCommand(words[1]);
+        case "find":
+            validateSingleArgCommand(words, "find");
+            return new FindCommand(words[1].trim());
+        default:
+            throw new BobletException("Unknown command: " + rawAction);
         }
     }
 
@@ -67,7 +67,7 @@ public class Parser {
     private static void validateSingleArgCommand(String[] words, String command) throws BobletException {
         assert words != null : "Words array should not be null";
         assert words.length > 0 : "Words array should have at least one element";
-        
+
         if (words.length < 2 || words[1].trim().isEmpty()) {
             throw new BobletException("The argument for the '" + command + "' command cannot be empty.");
         }
@@ -99,7 +99,8 @@ public class Parser {
         assert parts.length > 0 : "Deadline command should have at least one part";
 
         if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
-            throw new BobletException("The deadline must specify a description and a date/time using the '/by' keyword.");
+            throw new BobletException(
+                "The deadline must specify a description and a date/time using the '/by' keyword.");
         }
         return new AddCommand(new Deadline(parts[0].trim(), parts[1].trim()));
     }

@@ -25,7 +25,7 @@ public class Deadline extends Task {
         super(description, TaskType.DEADLINE);
         assert description != null && !description.trim().isEmpty() : "Task description should not be null or empty";
         assert by != null && !by.trim().isEmpty() : "Deadline date/time should not be null or empty";
-        
+
         this.by = parseDateTime(by);
         assert this.by != null : "Parsed deadline date/time should not be null";
     }
@@ -40,7 +40,7 @@ public class Deadline extends Task {
      */
     private LocalDateTime parseDateTime(String dateTime) {
         assert dateTime != null && !dateTime.trim().isEmpty() : "Input date/time string should not be null or empty";
-        
+
         String normalizedDateTime = dateTime.trim();
 
         // List of supported date/time formats

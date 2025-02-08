@@ -44,7 +44,7 @@ public class Boblet {
      */
     public String getResponse(String input) {
         assert input != null && !input.trim().isEmpty() : "User input should not be null or empty";
-        
+
         try {
             Command command = Parser.parse(input);
             assert command != null : "Parsed command should never be null";

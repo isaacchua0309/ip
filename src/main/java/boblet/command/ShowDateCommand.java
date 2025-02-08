@@ -66,7 +66,7 @@ public class ShowDateCommand extends Command {
                 .map(task -> (matchingTasks.indexOf(task) + 1) + ". " + task)
                 .collect(Collectors.joining("\n"));
 
-        return String.format("Tasks scheduled for %s:\n%s", 
+        return String.format("Tasks scheduled for %s:\n%s",
                 date.format(DateTimeFormatter.ofPattern("MMM dd yyyy")), taskList);
     }
 
