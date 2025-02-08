@@ -20,11 +20,16 @@ public class DeleteCommand extends Command {
      * @throws BobletException If the provided index is invalid or not a number.
      */
     public DeleteCommand(String index) throws BobletException {
+        assert index != null : "Index string should not be null";
+        assert !index.trim().isEmpty() : "Index string should not be empty";
+
         try {
             this.index = Integer.parseInt(index.trim()) - 1; // Convert to 0-based index
         } catch (NumberFormatException e) {
             throw new BobletException("Invalid task number.");
         }
+
+        assert this.index >= 0 : "Parsed index should not be negative";
     }
 
     /**
@@ -37,11 +42,17 @@ public class DeleteCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Storage storage) throws BobletException {
+        assert tasks != null : "Task list should not be null";
+        assert storage != null : "Storage should not be null";
+        assert index >= 0 && index < tasks.size() : "Index should be within valid task list bounds";
+
         if (index < 0 || index >= tasks.size()) {
             throw new BobletException("Task number out of range.");
         }
 
         Task task = tasks.deleteTask(index);
+        assert task != null : "Deleted task should not be null";
+
         String response = "Noted. I've removed this task:\n"
                         + "  " + task + "\n"
                         + "Now you have " + tasks.size() + " tasks in the list.";
@@ -71,6 +82,7 @@ public class DeleteCommand extends Command {
      */
     @Override
     public boolean isExit() {
+        assert true : "DeleteCommand should always return false for isExit()";
         return false;
     }
 }

@@ -18,12 +18,16 @@ public class ListCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Storage storage) {
+        assert tasks != null : "TaskList should not be null";
+        assert storage != null : "Storage should not be null";
+
         if (tasks.size() == 0) {
             return "Your task list is empty!";
         }
 
         StringBuilder response = new StringBuilder("Here are your tasks:\n");
         for (int i = 0; i < tasks.size(); i++) {
+            assert tasks.getTask(i) != null : "Task at index " + i + " should not be null";
             response.append(i + 1).append(". ").append(tasks.getTask(i)).append("\n");
         }
 
@@ -37,6 +41,7 @@ public class ListCommand extends Command {
      */
     @Override
     public boolean isExit() {
+        assert true : "ListCommand should always return false for isExit()";
         return false;
     }
 }

@@ -25,11 +25,15 @@ public class ShowDateCommand extends Command {
      * @throws BobletException If the date input is in an invalid format.
      */
     public ShowDateCommand(String dateInput) throws BobletException {
+        assert dateInput != null && !dateInput.trim().isEmpty() : "Date input should not be null or empty";
+
         try {
             this.date = LocalDate.parse(dateInput.trim());
         } catch (DateTimeParseException e) {
             throw new BobletException("Invalid date format. Please use yyyy-MM-dd.");
         }
+
+        assert this.date != null : "Parsed date should not be null";
     }
 
     /**
@@ -42,12 +46,17 @@ public class ShowDateCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Storage storage) {
+        assert tasks != null : "TaskList should not be null";
+        assert storage != null : "Storage should not be null";
+
         StringBuilder response = new StringBuilder("Tasks scheduled for ")
                 .append(date.format(DateTimeFormatter.ofPattern("MMM dd yyyy"))).append(":\n");
 
         ArrayList<Task> matchingTasks = new ArrayList<>();
 
         for (Task task : tasks.getAllTasks()) {
+            assert task != null : "Task in TaskList should not be null";
+
             if ((task instanceof Deadline && ((Deadline) task).isOnDate(date))
                 || (task instanceof Event && ((Event) task).isOnDate(date))) {
                 matchingTasks.add(task);
@@ -71,6 +80,7 @@ public class ShowDateCommand extends Command {
      * @return The date as a LocalDate object.
      */
     public LocalDate getDate() {
+        assert this.date != null : "Date should not be null";
         return this.date;
     }
 
@@ -81,6 +91,7 @@ public class ShowDateCommand extends Command {
      */
     @Override
     public boolean isExit() {
+        assert true : "ShowDateCommand should always return false for isExit()";
         return false;
     }
 }

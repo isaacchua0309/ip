@@ -24,7 +24,11 @@ public class Event extends Task {
      */
     public Event(String description, String at) {
         super(description, TaskType.EVENT);
+        assert description != null && !description.trim().isEmpty() : "Task description should not be null or empty";
+        assert at != null && !at.trim().isEmpty() : "Event date/time should not be null or empty";
+
         this.at = parseDateTime(at);
+        assert this.at != null : "Parsed event date/time should not be null";
     }
 
     /**
@@ -36,6 +40,8 @@ public class Event extends Task {
      * @throws IllegalArgumentException If the input does not match any supported format.
      */
     private LocalDateTime parseDateTime(String dateTime) {
+        assert dateTime != null && !dateTime.trim().isEmpty() : "Input date/time string should not be null or empty";
+        
         String normalizedDateTime = dateTime.trim();
 
         // List of supported date/time formats
@@ -51,20 +57,17 @@ public class Event extends Task {
         // Attempt to parse with each formatter
         for (DateTimeFormatter formatter : formats) {
             try {
-                // Try parsing as LocalDateTime
                 return LocalDateTime.parse(normalizedDateTime, formatter);
             } catch (DateTimeParseException e1) {
-                // If LocalDateTime fails, try LocalDate
                 try {
                     LocalDate date = LocalDate.parse(normalizedDateTime, formatter);
-                    return date.atStartOfDay(); // Defaults to 00:00 for LocalDate
+                    return date.atStartOfDay();
                 } catch (DateTimeParseException e2) {
                     // Continue trying the next format
                 }
             }
         }
 
-        // If no format matches, throw an exception
         throw new IllegalArgumentException("Invalid date/time format: " + dateTime);
     }
 
@@ -75,6 +78,7 @@ public class Event extends Task {
      * @return A formatted string representation of the event date/time.
      */
     public String getAt() {
+        assert this.at != null : "Event date/time should not be null before formatting";
         return at.format(DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm a", Locale.ENGLISH));
     }
 
@@ -85,6 +89,7 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
+        assert this.at != null : "Event date/time should not be null before converting to string";
         return super.toString() + " (at: " + getAt() + ")";
     }
 
@@ -95,6 +100,8 @@ public class Event extends Task {
      * @return True if the event occurs on the specified date, false otherwise.
      */
     public boolean isOnDate(LocalDate date) {
+        assert date != null : "Input date should not be null";
+        assert this.at != null : "Event date/time should not be null when checking the date";
         return this.at.toLocalDate().equals(date);
     }
 }

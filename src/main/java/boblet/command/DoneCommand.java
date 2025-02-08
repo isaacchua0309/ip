@@ -36,6 +36,8 @@ public class DoneCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Storage storage) throws BobletException {
+        assert tasks != null : "Task list should not be null";
+        assert index >= 0 && index < tasks.size() : "Invalid task index";
         if (index < 0 || index >= tasks.size()) {
             throw new BobletException("Task number out of range.");
         }
