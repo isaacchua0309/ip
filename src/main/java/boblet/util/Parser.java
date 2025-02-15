@@ -30,30 +30,30 @@ public class Parser {
         String action = rawAction.toLowerCase();
 
         switch (action) {
-        case "bye":
-            return new ExitCommand();
-        case "list":
-            return new ListCommand();
-        case "done":
-            validateSingleArgCommand(words, "done");
-            return new DoneCommand(words[1]);
-        case "delete":
-            validateSingleArgCommand(words, "delete");
-            return new DeleteCommand(words[1]);
-        case "todo":
-            return parseTodoCommand(words);
-        case "deadline":
-            return parseDeadlineCommand(words);
-        case "event":
-            return parseEventCommand(words);
-        case "showdate":
-            validateSingleArgCommand(words, "showdate");
-            return new ShowDateCommand(words[1]);
-        case "find":
-            validateSingleArgCommand(words, "find");
-            return new FindCommand(words[1].trim());
-        default:
-            throw new BobletException("Unknown command: " + rawAction);
+            case "bye":
+                return new ExitCommand();
+            case "list":
+                return new ListCommand();
+            case "done":
+                validateSingleArgCommand(words, "done");
+                return new DoneCommand(words[1]);
+            case "delete":
+                validateSingleArgCommand(words, "delete");
+                return new DeleteCommand(words[1]);
+            case "todo":
+                return parseTodoCommand(words);
+            case "deadline":
+                return parseDeadlineCommand(words);
+            case "event":
+                return parseEventCommand(words);
+            case "showdate":
+                validateSingleArgCommand(words, "showdate");
+                return new ShowDateCommand(words[1]);
+            case "find":
+                validateSingleArgCommand(words, "find");
+                return new FindCommand(words[1].trim());
+            default:
+                throw new BobletException("Unknown command: " + rawAction);
         }
     }
 
@@ -81,7 +81,9 @@ public class Parser {
      * @throws BobletException If the description is missing or empty.
      */
     private static Command parseTodoCommand(String[] words) throws BobletException {
-        validateSingleArgCommand(words, "todo");
+        if (words.length < 2 || words[1].trim().isEmpty()) {
+            throw new BobletException("The description of a todo cannot be empty.");
+        }
         return new AddCommand(new Todo(words[1].trim()));
     }
 
@@ -93,15 +95,15 @@ public class Parser {
      * @throws BobletException If the description or date/time is missing or invalid.
      */
     private static Command parseDeadlineCommand(String[] words) throws BobletException {
-        validateSingleArgCommand(words, "deadline");
+        if (words.length < 2 || words[1].trim().isEmpty()) {
+            throw new BobletException("The description of a deadline cannot be empty.");
+        }
 
         String[] parts = words[1].split(" /by ", 2);
-        assert parts.length > 0 : "Deadline command should have at least one part";
-
         if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
-            throw new BobletException(
-                "The deadline must specify a description and a date/time using the '/by' keyword.");
+            throw new BobletException("The deadline must specify a date/time using the '/by' keyword.");
         }
+
         return new AddCommand(new Deadline(parts[0].trim(), parts[1].trim()));
     }
 
@@ -113,14 +115,15 @@ public class Parser {
      * @throws BobletException If the description or date/time is missing or invalid.
      */
     private static Command parseEventCommand(String[] words) throws BobletException {
-        validateSingleArgCommand(words, "event");
+        if (words.length < 2 || words[1].trim().isEmpty()) {
+            throw new BobletException("The description of an event cannot be empty.");
+        }
 
         String[] parts = words[1].split(" /at ", 2);
-        assert parts.length > 0 : "Event command should have at least one part";
-
         if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
-            throw new BobletException("The event must specify a description and a date/time using the '/at' keyword.");
+            throw new BobletException("The event must specify a date/time using the '/at' keyword.");
         }
+
         return new AddCommand(new Event(parts[0].trim(), parts[1].trim()));
     }
 }

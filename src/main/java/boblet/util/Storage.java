@@ -70,7 +70,7 @@ public class Storage {
         }
     }
 
-    /**
+        /**
      * Parses a single line from the file into a Task object.
      *
      * @param line The line to parse.
@@ -89,38 +89,33 @@ public class Storage {
         boolean isDone = parts[1].equals("1");
         String description = parts[2];
 
+        Task task;
         switch (type) {
-        case "T":
-            assert !description.trim().isEmpty() : "Todo description should not be empty";
-            Todo todo = new Todo(description);
-            if (isDone) {
-                todo.markAsDone();
-                return todo;
-            }
-            break;
+            case "T":
+                task = new Todo(description);
+                break;
 
-        case "D":
-            validateParts(parts, 4, "deadline");
-            Deadline deadline = new Deadline(description, parts[3]);
-            if (isDone) {
-                deadline.markAsDone();
-                return deadline;
-            }
-            break;
+            case "D":
+                validateParts(parts, 4, "deadline");
+                task = new Deadline(description, parts[3]);
+                break;
 
-        case "E":
-            validateParts(parts, 4, "event");
-            Event event = new Event(description, parts[3]);
-            if (isDone) {
-                event.markAsDone();
-            }
-            return event;
+            case "E":
+                validateParts(parts, 4, "event");
+                task = new Event(description, parts[3]);
+                break;
 
-        default:
-            throw new BobletException("Unknown task type.");
+            default:
+                throw new BobletException("Unknown task type.");
         }
-        return new Todo("Dummy Task");
+
+        if (isDone) {
+            task.markAsDone();
+        }
+
+        return task;
     }
+
 
     /**
      * Serializes a Task object into a string for saving to the file.
