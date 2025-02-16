@@ -78,7 +78,8 @@ public class MainWindow extends AnchorPane {
                 Have fun using Boblet! 😊
                 """;
 
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
+            javafx.scene.control.Alert.AlertType.INFORMATION);
         alert.setTitle("Boblet Commands");
         alert.setHeaderText("Available Commands");
         alert.setContentText(helpMessage);
@@ -94,12 +95,19 @@ public class MainWindow extends AnchorPane {
             dialogContainer.getScene().getRoot().setStyle(darkTheme);
             helpButton.setStyle("-fx-background-color: #607d8b; -fx-text-fill: white; -fx-border-radius: 15;");
             sendButton.setStyle("-fx-background-color: #546e7a; -fx-text-fill: white; -fx-border-radius: 20;");
-            userInput.setStyle("-fx-background-color: #90a4ae; -fx-border-color: #455a64; -fx-border-radius: 20; -fx-text-fill: #ffffff;");
+            userInput.setStyle(
+                "-fx-background-color:#90a4ae;-fx-border-color:#455a64; -fx-border-radius:20;-fx-text-fill: #ffffff;");
         } else {
             dialogContainer.getScene().getRoot().setStyle(lightTheme);
             helpButton.setStyle("-fx-background-color: #4caf50; -fx-text-fill: white; -fx-border-radius: 15;");
-            sendButton.setStyle("-fx-background-color: linear-gradient(to bottom right, #0288d1, #01579b); -fx-text-fill: white; -fx-border-radius: 20;");
-            userInput.setStyle("-fx-background-color: #e3f2fd; -fx-border-color: #0288d1; -fx-border-radius: 20; -fx-text-fill: #004d40;");
+            sendButton.setStyle(
+                "-fx-background-color: linear-gradient(to bottom right, #0288d1, #01579b);"
+                + "-fx-text-fill: white;"
+                + "-fx-border-radius: 20;"
+            );
+
+            userInput.setStyle(
+                "-fx-background-color:#e3f2fd;-fx-border-color:#0288d1;-fx-border-radius:20;-fx-text-fill:#004d40;");
         }
     }
 

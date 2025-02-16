@@ -1,7 +1,13 @@
 package boblet.util;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+
 import boblet.exception.BobletException;
 import boblet.task.Deadline;
 import boblet.task.Event;
@@ -70,7 +76,7 @@ public class Storage {
         }
     }
 
-        /**
+    /**
      * Parses a single line from the file into a Task object.
      *
      * @param line The line to parse.
@@ -91,22 +97,22 @@ public class Storage {
 
         Task task;
         switch (type) {
-            case "T":
-                task = new Todo(description);
-                break;
+        case "T":
+            task = new Todo(description);
+            break;
 
-            case "D":
-                validateParts(parts, 4, "deadline");
-                task = new Deadline(description, parts[3]);
-                break;
+        case "D":
+            validateParts(parts, 4, "deadline");
+            task = new Deadline(description, parts[3]);
+            break;
 
-            case "E":
-                validateParts(parts, 4, "event");
-                task = new Event(description, parts[3]);
-                break;
+        case "E":
+            validateParts(parts, 4, "event");
+            task = new Event(description, parts[3]);
+            break;
 
-            default:
-                throw new BobletException("Unknown task type.");
+        default:
+            throw new BobletException("Unknown task type.");
         }
 
         if (isDone) {

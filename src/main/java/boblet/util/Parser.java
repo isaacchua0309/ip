@@ -1,6 +1,13 @@
 package boblet.util;
 
-import boblet.command.*;
+import boblet.command.AddCommand;
+import boblet.command.Command;
+import boblet.command.DeleteCommand;
+import boblet.command.DoneCommand;
+import boblet.command.ExitCommand;
+import boblet.command.FindCommand;
+import boblet.command.ListCommand;
+import boblet.command.ShowDateCommand;
 import boblet.exception.BobletException;
 import boblet.task.Deadline;
 import boblet.task.Event;
@@ -30,30 +37,30 @@ public class Parser {
         String action = rawAction.toLowerCase();
 
         switch (action) {
-            case "bye":
-                return new ExitCommand();
-            case "list":
-                return new ListCommand();
-            case "done":
-                validateSingleArgCommand(words, "done");
-                return new DoneCommand(words[1]);
-            case "delete":
-                validateSingleArgCommand(words, "delete");
-                return new DeleteCommand(words[1]);
-            case "todo":
-                return parseTodoCommand(words);
-            case "deadline":
-                return parseDeadlineCommand(words);
-            case "event":
-                return parseEventCommand(words);
-            case "showdate":
-                validateSingleArgCommand(words, "showdate");
-                return new ShowDateCommand(words[1]);
-            case "find":
-                validateSingleArgCommand(words, "find");
-                return new FindCommand(words[1].trim());
-            default:
-                throw new BobletException("Unknown command: " + rawAction);
+        case "bye":
+            return new ExitCommand();
+        case "list":
+            return new ListCommand();
+        case "done":
+            validateSingleArgCommand(words, "done");
+            return new DoneCommand(words[1]);
+        case "delete":
+            validateSingleArgCommand(words, "delete");
+            return new DeleteCommand(words[1]);
+        case "todo":
+            return parseTodoCommand(words);
+        case "deadline":
+            return parseDeadlineCommand(words);
+        case "event":
+            return parseEventCommand(words);
+        case "showdate":
+            validateSingleArgCommand(words, "showdate");
+            return new ShowDateCommand(words[1]);
+        case "find":
+            validateSingleArgCommand(words, "find");
+            return new FindCommand(words[1].trim());
+        default:
+            throw new BobletException("Unknown command: " + rawAction);
         }
     }
 
