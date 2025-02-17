@@ -1,74 +1,26 @@
 plugins {
-    // Apply the application plugin to support building and running a CLI application.
     id 'application'
     id 'checkstyle'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 repositories {
-    // Use Maven Central to resolve dependencies.
     mavenCentral()
 }
 
-dependencies {
-    // Include any dependencies required for the project.
-    implementation 'com.google.guava:guava:32.1.2-jre' // Example dependency for Guava.
+def javaFxVersion = '17.0.7'
+def osName = System.getProperty("os.name").toLowerCase()
+def osClassifier = osName.contains("win") ? "win" : osName.contains("mac") ? "mac" : "linux"
 
-    // Include JUnit for testing.
+dependencies {
+    implementation 'com.google.guava:guava:32.1.2-jre'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 
-    String javaFxVersion = '17.0.7'
-
-    implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'win'
-    implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'mac'
-    implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'linux'
-    implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'win'
-    implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'mac'
-    implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'linux'
-    implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'win'
-    implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'mac'
-    implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'linux'
-    implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'win'
-    implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'mac'
-    implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'linux'
-}
-
-java {
-    toolchain {
-        // Specify the Java version for the project.
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
-
-application {
-    // Specify the main class of your application.
-    mainClass = 'boblet.Boblet'
-}
-
-// Configure the `run` task for input handling.
-tasks.named('run') {
-    doFirst {
-        // Uncomment for interactive input.
-        standardInput = System.in
-
-        // Uncomment for file-based non-interactive input.
-        // standardInput = file('commands.txt').newInputStream()
-    }
-}
-
-// Configure the `jar` task to create a runnable JAR file.
-tasks.jar {
-    manifest {
-        attributes(
-            'Main-Class': application.mainClass
-        )
-    }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
+    // JavaFX Dependencies (Dynamically selects OS version)
+    implementation "org.openjfx:javafx-base:${javaFxVersion}:${osClassifier}"
+    implementation "org.openjfx:javafx-controls:${javaFxVersion}:${osClassifier}"
+    implementation "org.openjfx:javafx-fxml:${javaFxVersion}:${osClassifier}"
+    implementation "org.openjfx:javafx-graphics:${javaFxVersion}:${osClassifier}"
 }
 
 java {
@@ -77,17 +29,38 @@ java {
     }
 }
 
-checkstyle {
-    toolVersion = '10.2'  // Ensure this matches the CheckStyle version
-    configFile = file("${rootProject.projectDir}/config/checkstyle/checkstyle.xml")
-    configProperties.suppressionFile = file("${rootProject.projectDir}/config/checkstyle/suppressions.xml")
+application {
+    mainClass.set("boblet.Launcher")  // ✅ Use correct main class
 }
 
-application {
-    mainClass.set("boblet.Launcher")
+shadowJar {
+    archiveBaseName.set("boblet")
+    archiveClassifier.set("")
+    archiveVersion.set("")
+    manifest {
+        attributes 'Main-Class': application.mainClass.get()
+    }
+    mergeServiceFiles()
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.fxml'
+        include '**/*.png'
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 tasks.withType(Jar) {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
+checkstyle {
+    toolVersion = '10.2'
+    configFile = file("${rootProject.projectDir}/config/checkstyle/checkstyle.xml")
+    configProperties.suppressionFile = file("${rootProject.projectDir}/config/checkstyle/suppressions.xml")
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
