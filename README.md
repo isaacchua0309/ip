@@ -1,7 +1,3 @@
-Here is a suitable **`README.md`** file for your **Boblet** project:
-
----
-
 # **Boblet**
 
 Boblet is your friendly personal assistant chatbot! It helps you manage your tasks efficiently, offering support for various types of tasks such as ToDos, Deadlines, and Events. Designed as a command-line application, Boblet provides an interactive way to organize your daily activities.
@@ -234,7 +230,3 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 ## **License**
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
-
----
-
-Let me know if you want further refinements!
